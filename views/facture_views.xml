@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_it_parc_facturation_form" model="ir.ui.view">
+        <field name="name">it.parc.facturation.form</field>
+        <field name="model">it.parc.facturation</field>
+        <field name="arch" type="xml">
+            <form string="Facture">
+                <header>
+                    <button name="action_envoyer" string="Marquer comme envoyée" type="object" class="oe_highlight" invisible="etat != 'brouillon'"/>
+                    <button name="action_marquer_payee" string="Marquer comme payée" type="object" class="oe_highlight" invisible="etat != 'envoyee'"/>
+                    <button name="action_annuler" string="Annuler" type="object" invisible="etat in ('payee', 'annulee')"/>
+                    <button name="action_reinitialiser" string="Réinitialiser" type="object" invisible="etat != 'annulee'"/>
+                    <field name="etat" widget="statusbar" statusbar_visible="brouillon,envoyee,payee"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="client_info">
+                            <field name="client_id" options="{'no_create': True}"/>
+                            <field name="contrat_id" domain="[('client_id', '=', client_id)]" options="{'no_create': True}"/>
+                            <field name="abonnement_id" domain="[('client_id', '=', client_id)]" options="{'no_create': True}"/>
+                            <field name="mode_paiement"/>
+                            <field name="date"/>
+                            <field name="echeance"/>
+                        </group>
+                        <group name="montant_info">
+                            <field name="montant_ht" widget="monetary"/>
+                            <field name="taux_tva"/>
+                            <field name="montant_tva" widget="monetary"/>
+                            <field name="montant_ttc" widget="monetary" class="oe_subtotal_footer_separator"/>
+                            <field name="devise"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Description détaillée de la facture..."/>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Notes supplémentaires..."/>
+                        </page>
+                        <page string="Interventions associées" name="maintenance_ids">
+                            <button name="action_view_maintenances" string="Voir les interventions" type="object" class="oe_highlight"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View reste inchangé -->
+    <record id="view_it_parc_facturation_list" model="ir.ui.view">
+        <field name="name">it.parc.facturation.list</field>
+        <field name="model">it.parc.facturation</field>
+        <field name="arch" type="xml">
+            <list string="Factures">
+                <field name="name"/>
+                <field name="client_id"/>
+                <field name="contrat_id"/>
+                <field name="date"/>
+                <field name="echeance"/>
+                <field name="montant_ht"/>
+                <field name="montant_ttc"/>
+                <field name="devise"/>
+                <field name="etat" decoration-success="etat == 'payee'" decoration-danger="etat == 'annulee'" decoration-info="etat == 'brouillon'" decoration-warning="etat == 'envoyee'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View reste inchangé -->
+    <record id="view_it_parc_facturation_search" model="ir.ui.view">
+        <field name="name">it.parc.facturation.search</field>
+        <field name="model">it.parc.facturation</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher une facture">
+                <field name="name"/>
+                <field name="client_id"/>
+                <field name="contrat_id"/>
+                <separator/>
+                <filter name="brouillon" string="Brouillon" domain="[('etat', '=', 'brouillon')]"/>
+                <filter name="envoyee" string="Envoyée" domain="[('etat', '=', 'envoyee')]"/>
+                <filter name="payee" string="Payée" domain="[('etat', '=', 'payee')]"/>
+                <filter name="annulee" string="Annulée" domain="[('etat', '=', 'annulee')]"/>
+                <separator/>
+                <filter name="date_today" string="Aujourd'hui" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="date_month" string="Ce mois" domain="[('date', '&gt;=', (context_today() + relativedelta(day=1)).strftime('%Y-%m-%d')), ('date', '&lt;=', (context_today() + relativedelta(months=1, day=1, days=-1)).strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter name="group_by_client" string="Client" context="{'group_by': 'client_id'}"/>
+                    <filter name="group_by_contrat" string="Contrat" context="{'group_by': 'contrat_id'}"/>
+                    <filter name="group_by_etat" string="État" context="{'group_by': 'etat'}"/>
+                    <filter name="group_by_date" string="Date" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action et Menu restent inchangés -->
+    <record id="action_it_parc_facturation" model="ir.actions.act_window">
+        <field name="name">Factures</field>
+        <field name="res_model">it.parc.facturation</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_it_parc_facturation_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre première facture
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_it_parc_facturation" name="Factures" parent="menu_it_parc_root" action="action_it_parc_facturation" sequence="50"/>
+</odoo>
+

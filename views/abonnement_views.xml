@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_it_parc_abonnement_form" model="ir.ui.view">
+        <field name="name">it.parc.abonnement.form</field>
+        <field name="model">it.parc.abonnement</field>
+        <field name="arch" type="xml">
+            <form string="Abonnement">
+                <header>
+                    <button name="action_activer" string="Activer" type="object" class="oe_highlight" 
+                            invisible="etat != 'brouillon'"/>
+                    <button name="action_suspendre" string="Suspendre" type="object"
+                            invisible="etat != 'actif'"/>
+                    <button name="action_terminer" string="Terminer" type="object"
+                            invisible="etat not in ('actif', 'suspendu')"/>
+                    <button name="action_generer_facture" string="Générer facture manuellement" type="object"
+                            invisible="etat != 'actif'" class="btn-primary"/>
+                    <field name="etat" widget="statusbar" statusbar_visible="brouillon,actif,suspendu,termine"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_factures" type="object" class="oe_stat_button" icon="fa-money">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="facture_count"/></span>
+                                <span class="o_stat_text">Factures</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="abonnement_info">
+                            <field name="contrat_id" options="{'no_create': True}" readonly="etat != 'brouillon'"/>
+                            <field name="client_id" options="{'no_create': True}" readonly="1"/>
+                            <field name="date_debut" readonly="etat != 'brouillon'"/>
+                            <field name="date_fin"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group name="facturation_info">
+                            <field name="frequence"/>
+                            <field name="jour_facturation"/>
+                            <field name="prochaine_facturation" readonly="1"/>
+                            <field name="mode_paiement"/>
+                            <field name="email_notification" widget="email"/>
+                            <field name="jours_avant_notification"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Montants" name="montants">
+                            <group>
+                                <group>
+                                    <field name="montant_ht" widget="monetary"/>
+                                    <field name="taux_tva"/>
+                                    <field name="montant_tva" widget="monetary"/>
+                                    <field name="montant_ttc" widget="monetary" class="oe_subtotal_footer_separator"/>
+                                    <field name="devise"/>
+                                </group>
+                                <group>
+                                    <field name="total_facture" widget="monetary" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Articles facturés" name="articles">
+                            <field name="ligne_ids">
+                                <list string="Articles facturés" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="quantite"/>
+                                    <field name="prix_unitaire" widget="monetary"/>
+                                    <field name="montant" widget="monetary" sum="Total"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Description détaillée de l'abonnement..."/>
+                        </page>
+                        <page string="Factures générées" name="factures">
+                            <field name="facture_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="echeance"/>
+                                    <field name="montant_ttc" sum="Total"/>
+                                    <field name="etat"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_it_parc_abonnement_list" model="ir.ui.view">
+        <field name="name">it.parc.abonnement.list</field>
+        <field name="model">it.parc.abonnement</field>
+        <field name="arch" type="xml">
+            <list string="Abonnements">
+                <field name="name"/>
+                <field name="client_id"/>
+                <field name="contrat_id"/>
+                <field name="frequence"/>
+                <field name="prochaine_facturation"/>
+                <field name="montant_ttc" widget="monetary"/>
+                <field name="devise"/>
+                <field name="facture_count"/>
+                <field name="etat" decoration-success="etat == 'actif'" decoration-danger="etat == 'termine'" decoration-info="etat == 'brouillon'" decoration-warning="etat == 'suspendu'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_it_parc_abonnement_search" model="ir.ui.view">
+        <field name="name">it.parc.abonnement.search</field>
+        <field name="model">it.parc.abonnement</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher un abonnement">
+                <field name="name"/>
+                <field name="client_id"/>
+                <field name="contrat_id"/>
+                <separator/>
+                <filter name="brouillon" string="Brouillon" domain="[('etat', '=', 'brouillon')]"/>
+                <filter name="actif" string="Actif" domain="[('etat', '=', 'actif')]"/>
+                <filter name="suspendu" string="Suspendu" domain="[('etat', '=', 'suspendu')]"/>
+                <filter name="termine" string="Terminé" domain="[('etat', '=', 'termine')]"/>
+                <separator/>
+                <filter name="facture_soon" string="À facturer cette semaine" domain="[('prochaine_facturation', '&gt;=', context_today().strftime('%Y-%m-%d')), ('prochaine_facturation', '&lt;=', (context_today()+datetime.timedelta(days=7)).strftime('%Y-%m-%d')), ('etat', '=', 'actif')]"/>
+                <separator/>
+                <filter name="freq_mensuelle" string="Mensuelle" domain="[('frequence', '=', 'mensuelle')]"/>
+                <filter name="freq_trimestrielle" string="Trimestrielle" domain="[('frequence', '=', 'trimestrielle')]"/>
+                <filter name="freq_annuelle" string="Annuelle" domain="[('frequence', '=', 'annuelle')]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter name="group_by_client" string="Client" context="{'group_by': 'client_id'}"/>
+                    <filter name="group_by_contrat" string="Contrat" context="{'group_by': 'contrat_id'}"/>
+                    <filter name="group_by_etat" string="État" context="{'group_by': 'etat'}"/>
+                    <filter name="group_by_frequence" string="Fréquence" context="{'group_by': 'frequence'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_it_parc_abonnement" model="ir.actions.act_window">
+        <field name="name">Abonnements</field>
+        <field name="res_model">it.parc.abonnement</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_it_parc_abonnement_search"/>
+        <field name="context">{'search_default_actif': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre premier abonnement
+            </p>
+            <p>
+                Les abonnements permettent de facturer automatiquement vos clients selon une fréquence définie.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_it_parc_abonnement" name="Abonnements" parent="menu_it_parc_root" action="action_it_parc_abonnement" sequence="40"/>
+</odoo>

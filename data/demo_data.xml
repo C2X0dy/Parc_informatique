@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Données démo pour les clients -->
+        <record id="client_demo_1" model="it.parc.client">
+            <field name="name">Entreprise A</field>
+            <field name="code">ENT-A</field>
+            <field name="address">123 Rue des Exemples, Ville Exemple</field>
+            <field name="phone">+33 1 23 45 67 89</field>
+            <field name="email">contact@entreprisea.example</field>
+        </record>
+
+        <record id="client_demo_2" model="it.parc.client">
+            <field name="name">Entreprise B</field>
+            <field name="code">ENT-B</field>
+            <field name="address">456 Avenue Test, Ville Test</field>
+            <field name="phone">+33 9 87 65 43 21</field>
+            <field name="email">contact@entrepriseb.example</field>
+        </record>
+        
+        <!-- Données démo pour les contrats -->
+        <record id="contrat_demo_1" model="it.parc.contrat">
+            <field name="name">CONT-2023-001</field>
+            <field name="client_id" ref="client_demo_1"/>
+            <field name="type">maintenance</field>
+            <field name="date_debut" eval="(DateTime.now() - relativedelta(months=3)).strftime('%Y-%m-%d')"/>
+            <field name="date_fin" eval="(DateTime.now() + relativedelta(months=9)).strftime('%Y-%m-%d')"/>
+            <field name="montant">5000</field>
+            <field name="etat">actif</field>
+            <field name="description">Contrat de maintenance annuel couvrant tous les équipements informatiques.</field>
+        </record>
+
+        <!-- Données démo pour les matériels -->
+        <record id="materiel_demo_1" model="it.parc.materiel">
+            <field name="name">Serveur Principal</field>
+            <field name="reference">SRV-001</field>
+            <field name="serial_number">SN123456789</field>
+            <field name="type">serveur</field>
+            <field name="client_id" ref="client_demo_1"/>
+            <field name="contrat_id" ref="contrat_demo_1"/>
+            <field name="date_acquisition" eval="(DateTime.now() - relativedelta(years=1)).strftime('%Y-%m-%d')"/>
+            <field name="date_mise_service" eval="(DateTime.now() - relativedelta(years=1, days=-5)).strftime('%Y-%m-%d')"/>
+            <field name="date_fin_garantie" eval="(DateTime.now() + relativedelta(years=1)).strftime('%Y-%m-%d')"/>
+            <field name="etat">actif</field>
+            <field name="description">Serveur Dell PowerEdge R740, 32GB RAM, 2x1TB SSD RAID1</field>
+        </record>
+
+        <record id="materiel_demo_2" model="it.parc.materiel">
+            <field name="name">PC Portable Direction</field>
+            <field name="reference">PC-001</field>
+            <field name="serial_number">SN987654321</field>
+            <field name="type">ordinateur</field>
+            <field name="client_id" ref="client_demo_1"/>
+            <field name="contrat_id" ref="contrat_demo_1"/>
+            <field name="date_acquisition" eval="(DateTime.now() - relativedelta(months=6)).strftime('%Y-%m-%d')"/>
+            <field name="date_mise_service" eval="(DateTime.now() - relativedelta(months=6, days=-2)).strftime('%Y-%m-%d')"/>
+            <field name="date_fin_garantie" eval="(DateTime.now() + relativedelta(years=2, months=6)).strftime('%Y-%m-%d')"/>
+            <field name="etat">actif</field>
+            <field name="description">Laptop Dell XPS 15, 16GB RAM, 512GB SSD</field>
+        </record>
+
+        <!-- Données démo pour les incidents -->
+        <record id="incident_demo_1" model="it.parc.incident">
+            <field name="name">INC-001</field>
+            <field name="objet">Problème de connexion réseau</field>
+            <field name="description">L'utilisateur ne peut pas se connecter au réseau depuis son poste de travail.</field>
+            <field name="date_creation" eval="DateTime.now() - relativedelta(days=5)"/>
+            <field name="client_id" ref="client_demo_1"/>
+            <field name="materiel_id" ref="materiel_demo_2"/>
+            <field name="type">reseau</field>
+            <field name="priorite">2</field>
+            <field name="etat">en_cours</field>
+        </record>
+
+        <!-- Données démo pour les maintenances -->
+        <record id="maintenance_demo_1" model="it.parc.maintenance">
+            <field name="name">MAINT-001</field>
+            <field name="type">corrective</field>
+            <field name="date_debut" eval="DateTime.now() - relativedelta(days=4, hours=2)"/>
+            <field name="client_id" ref="client_demo_1"/>
+            <field name="materiel_id" ref="materiel_demo_2"/>
+            <field name="incident_id" ref="incident_demo_1"/>
+            <field name="description">Intervention pour résoudre le problème de connexion réseau.</field>
+            <field name="etat">en_cours</field>
+            <field name="facturable">True</field>
+            <field name="tarif_horaire">75</field>
+        </record>
+    </data>
+</odoo>

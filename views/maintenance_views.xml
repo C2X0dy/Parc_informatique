@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_it_parc_maintenance_form" model="ir.ui.view">
+        <field name="name">it.parc.maintenance.form</field>
+        <field name="model">it.parc.maintenance</field>
+        <field name="arch" type="xml">
+            <form string="Intervention">
+                <header>
+                    <button name="action_demarrer" string="Démarrer" type="object" class="oe_highlight" invisible="etat != 'planifiee'"/>
+                    <button name="action_terminer" string="Terminer" type="object" class="oe_highlight" invisible="etat != 'en_cours'"/>
+                    <button name="action_annuler" string="Annuler" type="object" invisible="etat in ('terminee', 'annulee')"/>
+                    <field name="etat" widget="statusbar" statusbar_visible="planifiee,en_cours,terminee"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="client_id"/>
+                            <field name="materiel_id" domain="[('client_id', '=', client_id)]"/>
+                            <field name="incident_id" domain="[('client_id', '=', client_id)]"/>
+                            <field name="type"/>
+                        </group>
+                        <group>
+                            <field name="date_debut"/>
+                            <field name="date_fin" readonly="1" invisible="date_fin == False"/>
+                            <field name="duree" widget="float_time" readonly="1" invisible="duree == 0"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Facturation">
+                            <field name="facturable"/>
+                            <field name="tarif_horaire" invisible="facturable == False"/>
+                            <field name="montant_estime" invisible="facturable == False" widget="monetary"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Description de l'intervention..."/>
+                        </page>
+                        <page string="Actions réalisées" name="actions_realisees">
+                            <field name="actions_realisees" placeholder="Actions réalisées lors de l'intervention..."/>
+                        </page>
+                        <page string="Résultats" name="resultats">
+                            <field name="resultats" placeholder="Résultats de l'intervention..."/>
+                        </page>
+                        <page string="Notes techniques" name="notes">
+                            <field name="notes" placeholder="Notes techniques..."/>
+                        </page>
+                        <page string="Factures associées" name="facture_ids">
+                            <!-- Remplacer l'affichage direct des factures par un bouton -->
+                            <button name="action_view_factures" string="Voir les factures" type="object" class="oe_highlight"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_it_parc_maintenance_list" model="ir.ui.view">
+        <field name="name">it.parc.maintenance.list</field>
+        <field name="model">it.parc.maintenance</field>
+        <field name="arch" type="xml">
+            <list string="Interventions">
+                <field name="name"/>
+                <field name="client_id"/>
+                <field name="materiel_id"/>
+                <field name="type"/>
+                <field name="date_debut"/>
+                <field name="date_fin"/>
+                <field name="duree" widget="float_time"/>
+                <field name="facturable"/>
+                <field name="montant_estime" sum="Total" widget="monetary"/>
+                <field name="etat" decoration-success="etat == 'terminee'" decoration-danger="etat == 'annulee'" decoration-info="etat == 'planifiee'" decoration-warning="etat == 'en_cours'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_it_parc_maintenance_search" model="ir.ui.view">
+        <field name="name">it.parc.maintenance.search</field>
+        <field name="model">it.parc.maintenance</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher une intervention">
+                <field name="name"/>
+                <field name="client_id"/>
+                <field name="materiel_id"/>
+                <field name="incident_id"/>
+                <separator/>
+                <filter name="planifiee" string="Planifiée" domain="[('etat', '=', 'planifiee')]"/>
+                <filter name="en_cours" string="En cours" domain="[('etat', '=', 'en_cours')]"/>
+                <filter name="terminee" string="Terminée" domain="[('etat', '=', 'terminee')]"/>
+                <filter name="annulee" string="Annulée" domain="[('etat', '=', 'annulee')]"/>
+                <separator/>
+                <filter name="facturable" string="Facturable" domain="[('facturable', '=', True)]"/>
+                <separator/>
+                <filter name="date_today" string="Aujourd'hui" domain="[('date_debut', '&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')), ('date_debut', '&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter name="date_week" string="Cette semaine" domain="[('date_debut', '&gt;=', (context_today() + relativedelta(weeks=-1, days=1, weekday=0)).strftime('%Y-%m-%d 00:00:00')), ('date_debut', '&lt;=', (context_today() + relativedelta(weekday=6)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter name="group_by_client" string="Client" context="{'group_by': 'client_id'}"/>
+                    <filter name="group_by_materiel" string="Matériel" context="{'group_by': 'materiel_id'}"/>
+                    <filter name="group_by_type" string="Type" context="{'group_by': 'type'}"/>
+                    <filter name="group_by_etat" string="État" context="{'group_by': 'etat'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_it_parc_maintenance" model="ir.actions.act_window">
+        <field name="name">Interventions</field>
+        <field name="res_model">it.parc.maintenance</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_it_parc_maintenance_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre première intervention
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_it_parc_maintenance" name="Interventions" parent="menu_it_parc_root" action="action_it_parc_maintenance" sequence="60"/>
+
+    <!-- Maintenance Préventive Form View -->
+    <record id="view_it_parc_maintenance_preventive_form" model="ir.ui.view">
+        <field name="name">it.parc.maintenance.preventive.form</field>
+        <field name="model">it.parc.maintenance.preventive</field>
+        <field name="arch" type="xml">
+            <form string="Plan de maintenance préventive">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="categorie_id"/>
+                            <field name="client_id"/>
+                            <field name="frequence"/>
+                        </group>
+                        <group>
+                            <field name="date_derniere"/>
+                            <field name="date_prochaine" readonly="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Décrivez les tâches à effectuer lors de cette maintenance préventive..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Maintenance Préventive List View -->
+    <record id="view_it_parc_maintenance_preventive_list" model="ir.ui.view">
+        <field name="name">it.parc.maintenance.preventive.list</field>
+        <field name="model">it.parc.maintenance.preventive</field>
+        <field name="arch" type="xml">
+            <list string="Plans de maintenance préventive">
+                <field name="name"/>
+                <field name="categorie_id"/>
+                <field name="client_id"/>
+                <field name="frequence"/>
+                <field name="date_derniere"/>
+                <field name="date_prochaine"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_it_parc_maintenance_preventive" model="ir.actions.act_window">
+        <field name="name">Maintenance préventive</field>
+        <field name="res_model">it.parc.maintenance.preventive</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre premier plan de maintenance préventive
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_it_parc_maintenance_preventive" 
+          name="Maintenance préventive" 
+          parent="menu_it_parc_root" 
+          action="action_it_parc_maintenance_preventive" 
+          sequence="65"/>
+</odoo>
+

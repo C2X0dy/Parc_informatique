@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_it_parc_incident_form" model="ir.ui.view">
+        <field name="name">it.parc.incident.form</field>
+        <field name="model">it.parc.incident</field>
+        <field name="arch" type="xml">
+            <form string="Incident">
+                <header>
+                    <button name="action_resoudre" string="Résoudre" type="object" class="oe_highlight" invisible="etat in ('resolu', 'annule')"/>
+                    <button name="action_annuler" string="Annuler" type="object" invisible="etat in ('resolu', 'annule')"/>
+                    <field name="etat" widget="statusbar" statusbar_visible="nouveau,en_cours,en_attente,resolu"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_maintenances" type="object" class="oe_stat_button" icon="fa-wrench">
+                            <field name="maintenance_count" widget="statinfo" string="Interventions"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <h2>
+                            <field name="objet" placeholder="Objet de l'incident"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="client_id"/>
+                            <field name="materiel_id" domain="[('client_id', '=', client_id)]"/>
+                            <field name="type"/>
+                            <field name="priorite" widget="priority"/>
+                        </group>
+                        <group>
+                            <field name="date_creation"/>
+                            <field name="date_cloture" readonly="1" invisible="date_cloture == False"/>
+                            <field name="duree" widget="float_time" readonly="1" invisible="duree == 0"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Description détaillée de l'incident..."/>
+                        </page>
+                        <page string="Solution" name="solution" invisible="etat not in ('resolu')">
+                            <field name="solution" placeholder="Solution apportée..."/>
+                        </page>
+                        <page string="Commentaires" name="commentaires">
+                            <field name="commentaire" placeholder="Commentaires..."/>
+                        </page>
+                        <page string="Interventions" name="maintenances">
+                            <!-- Utiliser juste le bouton pour ouvrir les interventions, 
+                                 sans afficher directement les champs qui causent le problème -->
+                            <button name="action_view_maintenances" string="Voir les interventions" type="object" class="oe_highlight"/>
+                            
+                            <!-- Version sécurisée qui n'affiche que les champs sans problème -->
+                            <!--
+                            <field name="maintenance_ids" context="{'default_incident_id': active_id, 'default_client_id': client_id, 'default_materiel_id': materiel_id}">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="type"/>
+                                    <field name="etat"/>
+                                </list>
+                            </field>
+                            -->
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_it_parc_incident_list" model="ir.ui.view">
+        <field name="name">it.parc.incident.list</field>
+        <field name="model">it.parc.incident</field>
+        <field name="arch" type="xml">
+            <list string="Incidents">
+                <field name="name"/>
+                <field name="objet"/>
+                <field name="client_id"/>
+                <field name="materiel_id"/>
+                <field name="date_creation"/>
+                <field name="priorite" widget="priority"/>
+                <field name="type"/>
+                <field name="etat" decoration-success="etat == 'resolu'" decoration-danger="etat == 'annule'" decoration-info="etat == 'nouveau'" decoration-warning="etat == 'en_attente'" decoration-primary="etat == 'en_cours'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_it_parc_incident_search" model="ir.ui.view">
+        <field name="name">it.parc.incident.search</field>
+        <field name="model">it.parc.incident</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher un incident">
+                <field name="name"/>
+                <field name="objet"/>
+                <field name="client_id"/>
+                <field name="materiel_id"/>
+                <separator/>
+                <filter name="nouveau" string="Nouveau" domain="[('etat', '=', 'nouveau')]"/>
+                <filter name="en_cours" string="En cours" domain="[('etat', '=', 'en_cours')]"/>
+                <filter name="en_attente" string="En attente" domain="[('etat', '=', 'en_attente')]"/>
+                <filter name="resolu" string="Résolu" domain="[('etat', '=', 'resolu')]"/>
+                <filter name="annule" string="Annulé" domain="[('etat', '=', 'annule')]"/>
+                <separator/>
+                <filter name="priorite_critique" string="Priorité critique" domain="[('priorite', '=', '4')]"/>
+                <filter name="priorite_elevee" string="Priorité élevée" domain="[('priorite', '=', '3')]"/>
+                <filter name="priorite_normale" string="Priorité normale" domain="[('priorite', '=', '2')]"/>
+                <filter name="priorite_basse" string="Priorité basse" domain="[('priorite', '=', '1')]"/>
+                <separator/>
+                <filter name="mes_incidents" string="Mes incidents" domain="[('message_partner_ids', 'in', [uid])]"/>
+                <filter name="incidents_non_resolus" string="Non résolus" domain="[('etat', 'not in', ['resolu', 'annule'])]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter name="group_by_client" string="Client" context="{'group_by': 'client_id'}"/>
+                    <filter name="group_by_materiel" string="Matériel" context="{'group_by': 'materiel_id'}"/>
+                    <filter name="group_by_type" string="Type" context="{'group_by': 'type'}"/>
+                    <filter name="group_by_etat" string="État" context="{'group_by': 'etat'}"/>
+                    <filter name="group_by_priorite" string="Priorité" context="{'group_by': 'priorite'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_it_parc_incident" model="ir.actions.act_window">
+        <field name="name">Incidents</field>
+        <field name="res_model">it.parc.incident</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_it_parc_incident_search"/>
+        <field name="context">{'search_default_incidents_non_resolus': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre premier incident
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_it_parc_incident" name="Incidents" parent="menu_it_parc_root" action="action_it_parc_incident" sequence="40"/>
+</odoo>
+

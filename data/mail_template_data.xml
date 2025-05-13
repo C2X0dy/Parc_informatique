@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Email template pour notification abonnement -->
+        <record id="email_template_abonnement_notification" model="mail.template">
+            <field name="name">Notification de facturation à venir</field>
+            <field name="model_id" ref="model_it_parc_abonnement"/>
+            <field name="subject">Facturation à venir pour l'abonnement ${object.name}</field>
+            <field name="email_from">${user.email_formatted}</field>
+            <field name="email_to">${object.email_notification}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-size: 13px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Bonjour ${object.client_id.contact_name or 'Client'},
+                    </p>
+                    <br/>
+                    <p>
+                        Nous vous informons qu'une facture sera générée dans ${object.jours_avant_notification} jours pour votre abonnement ${object.name}.
+                    </p>
+                    <p>
+                        <strong>Détails :</strong>
+                        <ul>
+                            <li>Date de facturation: ${format_date(object.prochaine_facturation)}</li>
+                            <li>Montant: ${format_amount(object.montant_ttc, object.devise)}</li>
+                            <li>Contrat: ${object.contrat_id.name}</li>
+                        </ul>
+                    </p>
+                    <p>
+                        Ce message est généré automatiquement, n'hésitez pas à nous contacter pour toute question.
+                    </p>
+                    <br/>
+                    <p>Cordialement,</p>
+                    <p>L'équipe de gestion IT</p>
+                </div>
+            </field>
+            <field name="lang">${object.client_id.lang}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

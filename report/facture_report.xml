@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_facture" model="ir.actions.report">
+        <field name="name">Facture</field>
+        <field name="model">it.parc.facturation</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">it_parc.report_facture_document</field>
+        <field name="report_file">it_parc.report_facture_document</field>
+        <field name="binding_model_id" ref="model_it_parc_facturation"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_facture_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Facture <span t-field="doc.name"/></h2>
+                        <div class="row mt32 mb32">
+                            <div class="col-6">
+                                <strong>Client:</strong> <span t-field="doc.client_id.name"/><br/>
+                                <t t-if="doc.contrat_id">
+                                    <strong>Contrat:</strong> <span t-field="doc.contrat_id.name"/><br/>
+                                </t>
+                                <strong>Date:</strong> <span t-field="doc.date"/><br/>
+                                <strong>Échéance:</strong> <span t-field="doc.echeance"/><br/>
+                            </div>
+                            <div class="col-6">
+                                <strong>État:</strong> <span t-field="doc.etat"/><br/>
+                            </div>
+                        </div>
+
+                        <h4>Détails</h4>
+                        <table class="table table-sm o_main_table">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Montant HT</strong></td>
+                                    <td class="text-right"><span t-field="doc.montant_ht"/> <span t-field="doc.devise"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>TVA (<span t-field="doc.taux_tva"/>%)</strong></td>
+                                    <td class="text-right"><span t-field="doc.montant_tva"/> <span t-field="doc.devise"/></td>
+                                </tr>
+                                <tr class="border-top">
+                                    <td><strong>Total TTC</strong></td>
+                                    <td class="text-right"><strong><span t-field="doc.montant_ttc"/> <span t-field="doc.devise"/></strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Description</h4>
+                                <p t-field="doc.description"/>
+                            </div>
+                        </div>
+
+                        <div class="row" t-if="doc.notes">
+                            <div class="col-12">
+                                <h4>Notes</h4>
+                                <p t-field="doc.notes"/>
+                            </div>
+                        </div>
+
+                        <div class="row" t-if="doc.maintenance_ids">
+                            <div class="col-12">
+                                <h4>Interventions associées</h4>
+                                <table class="table table-sm o_main_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Référence</th>
+                                            <th>Type</th>
+                                            <th>Date</th>
+                                            <th>Durée</th>
+                                            <th>Montant</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="doc.maintenance_ids" t-as="maintenance">
+                                            <td><span t-field="maintenance.name"/></td>
+                                            <td><span t-field="maintenance.type"/></td>
+                                            <td><span t-field="maintenance.date_debut"/></td>
+                                            <td><span t-field="maintenance.duree"/> heures</td>
+                                            <td><span t-field="maintenance.montant_estime"/> <span t-field="doc.devise"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+

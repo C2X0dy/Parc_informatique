@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Tâche planifiée pour vérifier les contrats arrivant à expiration -->
+        <record id="ir_cron_check_contrat_expiration" model="ir.cron">
+            <field name="name">Vérification des contrats en fin de validité</field>
+            <field name="model_id" ref="model_it_parc_contrat"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_check_contrat_expiration()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime.now() + relativedelta(days=1)).replace(hour=4, minute=0, second=0)"/>
+        </record>
+
+        <!-- Tâche planifiée pour vérifier les garanties arrivant à expiration -->
+        <record id="ir_cron_check_garantie_expiration" model="ir.cron">
+            <field name="name">Vérification des garanties en fin de validité</field>
+            <field name="model_id" ref="model_it_parc_materiel"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_check_garantie_expiration()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime.now() + relativedelta(days=1)).replace(hour=4, minute=30, second=0)"/>
+        </record>
+
+        <!-- Tâche planifiée pour générer les factures -->
+        <record id="ir_cron_generer_factures_abonnement" model="ir.cron">
+            <field name="name">Génération automatique des factures d'abonnement</field>
+            <field name="model_id" ref="model_it_parc_abonnement"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_generer_factures()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime.now() + relativedelta(days=1)).replace(hour=1, minute=0, second=0)"/>
+        </record>
+
+        <!-- Tâche planifiée pour les notifications de facturation à venir -->
+        <record id="ir_cron_notification_facture" model="ir.cron">
+            <field name="name">Notification des facturations à venir</field>
+            <field name="model_id" ref="model_it_parc_abonnement"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_notification_facture()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime.now() + relativedelta(days=1)).replace(hour=8, minute=0, second=0)"/>
+        </record>
+
+        <!-- Tâche planifiée pour générer les écritures d'amortissement -->
+        <record id="ir_cron_amortissement_auto" model="ir.cron">
+            <field name="name">Génération automatique des écritures d'amortissement</field>
+            <field name="model_id" ref="model_it_parc_materiel_amortissement"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_comptabiliser_amortissements()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime.now() + relativedelta(months=1, day=1)).replace(hour=2, minute=0, second=0)"/>
+        </record>
+
+        <!-- Tâche planifiée pour générer les maintenances préventives -->
+        <record id="ir_cron_maintenance_preventive" model="ir.cron">
+            <field name="name">Génération des maintenances préventives</field>
+            <field name="model_id" ref="model_it_parc_maintenance_preventive"/>
+            <field name="state">code</field>
+            <field name="code">model.action_generer_maintenances()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime.now() + relativedelta(days=1)).replace(hour=5, minute=0, second=0)"/>
+        </record>
+    </data>
+</odoo>
+

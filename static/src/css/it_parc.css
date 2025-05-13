@@ -1,0 +1,104 @@
+/* Make sure form elements resize properly */
+.o_form_view .o_group {
+    margin: 0 0 10px 0;
+}
+
+/* Dashboard specific styles */
+.o_dashboard_view .card {
+    transition: all 0.3s ease;
+    border-radius: 12px !important;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+.o_dashboard_view .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.o_dashboard_view .text-orange {
+    color: #e65100;
+}
+
+.o_dashboard_view .text-purple {
+    color: #6a1b9a;
+}
+
+.o_dashboard_view .text-brown {
+    color: #6d4c41;
+}
+
+/* Chart container styling */
+.o_dashboard_view .o_graph_renderer {
+    min-height: 240px;
+}
+
+/* Badge styling */
+.o_dashboard_view .badge {
+    padding: 0.4rem 0.8rem;
+    font-weight: 500;
+}
+
+/* Hover effect for cards */
+.o_dashboard_view .card.shadow-sm:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Additional decorations for KPI cards */
+.o_dashboard_view .card .rounded-circle {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Table styles for better visualization */
+.o_dashboard_view .o_list_view {
+    margin-bottom: 0;
+}
+
+.o_dashboard_view .o_list_view thead th {
+    background-color: #f9fafb;
+    font-weight: 600;
+}
+
+/* Table row hover styles */
+.o_dashboard_view .o_list_view tbody tr:hover {
+    background-color: #f5f7fa;
+}
+
+/* Ensure proper display for small screens */
+@media (max-width: 767.98px) {
+    .o_form_view .o_group .o_field_widget {
+        width: 100%;
+    }
+    
+    .o_dashboard_view .col-md-3,
+    .o_dashboard_view .col-md-4 {
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .o_dashboard_view .card {
+        margin-bottom: 15px;
+    }
+}
+
+/* Make sure form elements resize properly on mobile */
+@media (max-width: 992px) {
+    .o_dashboard_view .col-lg-2,
+    .o_dashboard_view .col-lg-3,
+    .o_dashboard_view .col-lg-4 {
+        margin-bottom: 15px;
+    }
+    
+    .o_dashboard_view h2 {
+        font-size: 1.5rem;
+    }
+    
+    .o_dashboard_view h3 {
+        font-size: 1.2rem;
+    }
+}

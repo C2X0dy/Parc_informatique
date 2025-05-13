@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Commenté temporairement pour éviter les erreurs lors de l'installation
+    <template id="portal_my_home_menu_it_parc" name="Portal Menu IT Parc" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'incident'" class="breadcrumb-item">
+                <a t-if="incident" t-attf-href="/my/incidents?{{ keep_query() }}">Incidents</a>
+                <t t-else="">Incidents</t>
+            </li>
+        </xpath>
+    </template>
+    -->
+</odoo>
+

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_it_parc_affectation_form" model="ir.ui.view">
+        <field name="name">it.parc.affectation.form</field>
+        <field name="model">it.parc.affectation</field>
+        <field name="arch" type="xml">
+            <form string="Affectation">
+                <header>
+                    <button name="action_mettre_en_cours" string="Mettre en cours" type="object" class="oe_highlight" invisible="etat != 'brouillon'"/>
+                    <button name="action_terminer" string="Terminer" type="object" class="oe_highlight" invisible="etat != 'en_cours'"/>
+                    <button name="action_annuler" string="Annuler" type="object" invisible="etat in ('terminee', 'annulee')"/>
+                    <field name="etat" widget="statusbar" statusbar_visible="brouillon,en_cours,terminee"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="materiel_id"/>
+                            <field name="utilisateur_nom"/>
+                            <field name="utilisateur_email"/>
+                            <field name="departement"/>
+                        </group>
+                        <group>
+                            <field name="date_debut"/>
+                            <field name="date_fin" readonly="1" invisible="date_fin == False"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Commentaires" name="commentaires">
+                            <field name="commentaire" placeholder="Commentaires sur l'affectation..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_it_parc_affectation_list" model="ir.ui.view">
+        <field name="name">it.parc.affectation.list</field>
+        <field name="model">it.parc.affectation</field>
+        <field name="arch" type="xml">
+            <list string="Affectations">
+                <field name="name"/>
+                <field name="materiel_id"/>
+                <field name="utilisateur_nom"/>
+                <field name="departement"/>
+                <field name="date_debut"/>
+                <field name="date_fin"/>
+                <field name="etat" decoration-success="etat == 'terminee'" decoration-danger="etat == 'annulee'" decoration-info="etat == 'brouillon'" decoration-warning="etat == 'en_cours'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_it_parc_affectation_search" model="ir.ui.view">
+        <field name="name">it.parc.affectation.search</field>
+        <field name="model">it.parc.affectation</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher une affectation">
+                <field name="name"/>
+                <field name="materiel_id"/>
+                <field name="utilisateur_nom"/>
+                <field name="departement"/>
+                <separator/>
+                <filter name="brouillon" string="Brouillon" domain="[('etat', '=', 'brouillon')]"/>
+                <filter name="en_cours" string="En cours" domain="[('etat', '=', 'en_cours')]"/>
+                <filter name="terminee" string="Terminée" domain="[('etat', '=', 'terminee')]"/>
+                <filter name="annulee" string="Annulée" domain="[('etat', '=', 'annulee')]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter name="group_by_materiel" string="Matériel" context="{'group_by': 'materiel_id'}"/>
+                    <filter name="group_by_departement" string="Département" context="{'group_by': 'departement'}"/>
+                    <filter name="group_by_etat" string="État" context="{'group_by': 'etat'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_it_parc_affectation" model="ir.actions.act_window">
+        <field name="name">Affectations</field>
+        <field name="res_model">it.parc.affectation</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_it_parc_affectation_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre première affectation
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_it_parc_affectation" name="Affectations" parent="menu_it_parc_root" action="action_it_parc_affectation" sequence="70"/>
+</odoo>
+

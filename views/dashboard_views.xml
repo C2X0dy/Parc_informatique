@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="it_parc_dashboard_view" model="ir.ui.view">
+        <field name="name">it.parc.dashboard.view</field>
+        <field name="model">it.parc.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Tableau de bord IT" create="false" edit="false" class="o_dashboard_view">
+                <div class="container-fluid px-4 py-3">
+                    <!-- En-tête du dashboard -->
+                    <div class="row mb-4">
+                        <div class="col-lg-12">
+                            <h2 class="mb-0 fw-bold text-center">Tableau de bord du Parc Informatique</h2>
+                            <p class="text-muted text-center mb-0">Vue d'ensemble de votre infrastructure IT</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Première rangée - Grands indicateurs -->
+                    <div class="row mb-4">
+                        <!-- Carte statistiques matériels -->
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="card h-100 overflow-hidden shadow-sm border-0" style="border-radius: 12px; border-left: 4px solid #2e7d32 !important;">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 rounded-circle p-3 me-3" style="background-color: rgba(46, 125, 50, 0.1);">
+                                            <i class="fa fa-laptop text-success fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h2 class="mb-0 fw-bold"><field name="total_materiels"/></h2>
+                                            <span class="text-muted">Matériels</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carte statistiques clients -->
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="card h-100 overflow-hidden shadow-sm border-0" style="border-radius: 12px; border-left: 4px solid #d81b60 !important;">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 rounded-circle p-3 me-3" style="background-color: rgba(216, 27, 96, 0.1);">
+                                            <i class="fa fa-users text-danger fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h2 class="mb-0 fw-bold"><field name="total_clients"/></h2>
+                                            <span class="text-muted">Clients</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carte incidents en cours -->
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="card h-100 overflow-hidden shadow-sm border-0" style="border-radius: 12px; border-left: 4px solid #f9a825 !important;">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 rounded-circle p-3 me-3" style="background-color: rgba(249, 168, 37, 0.1);">
+                                            <i class="fa fa-exclamation-triangle text-warning fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h2 class="mb-0 fw-bold"><field name="incidents_en_cours"/></h2>
+                                            <span class="text-muted">Incidents actifs</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carte tickets en cours -->
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <div class="card h-100 overflow-hidden shadow-sm border-0" style="border-radius: 12px; border-left: 4px solid #e65100 !important;">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 rounded-circle p-3 me-3" style="background-color: rgba(230, 81, 0, 0.1);">
+                                            <i class="fa fa-ticket text-orange fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h2 class="mb-0 fw-bold"><field name="tickets_en_cours"/></h2>
+                                            <span class="text-muted">Tickets en cours</span>
+                                            <div class="small text-danger" invisible="tickets_sla_depasse == 0">
+                                                <i class="fa fa-clock-o"></i> <field name="tickets_sla_depasse"/> SLA dépassés
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deuxième rangée - Indicateurs secondaires -->
+                    <div class="row mb-4">
+                        <!-- Carte statistiques contrats -->
+                        <div class="col-lg-2 col-md-4 mb-3">
+                            <div class="card h-100 overflow-hidden shadow-sm border-0" style="border-radius: 12px; background-color: #f8fafc;">
+                                <div class="card-body text-center p-3">
+                                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(21, 101, 192, 0.1);">
+                                        <i class="fa fa-file-text-o text-primary"></i>
+                                    </div>
+                                    <h3 class="mb-0 fw-bold"><field name="total_contrats"/></h3>
+                                    <span class="text-muted">Contrats</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carte statistiques interventions -->
+                        <div class="col-lg-2 col-md-4 mb-3">
+                            <div class="card h-100 overflow-hidden shadow-sm border-0" style="border-radius: 12px; background-color: #f8fafc;">
+                                <div class="card-body text-center p-3">
+                                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(106, 27, 154, 0.1);">
+                                        <i class="fa fa-wrench text-purple"></i>
+                                    </div>
+                                    <h3 class="mb-0 fw-bold"><field name="total_maintenances"/></h3>
+                                    <span class="text-muted">Interventions</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carte statistiques factures -->
+                        <div class="col-lg-2 col-md-4 mb-3">
+                            <div class="card h-100 overflow-hidden shadow-sm border-0" style="border-radius: 12px; background-color: #f8fafc;">
+                                <div class="card-body text-center p-3">
+                                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(198, 40, 40, 0.1);">
+                                        <i class="fa fa-money text-danger"></i>
+                                    </div>
+                                    <h3 class="mb-0 fw-bold"><field name="factures_non_payees"/></h3>
+                                    <span class="text-muted">Factures en attente</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carte garanties -->
+                        <div class="col-lg-2 col-md-4 mb-3">
+                            <div class="card h-100 overflow-hidden shadow-sm border-0" style="border-radius: 12px; background-color: #f8fafc;">
+                                <div class="card-body text-center p-3">
+                                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(0, 172, 193, 0.1);">
+                                        <i class="fa fa-calendar-check-o text-info"></i>
+                                    </div>
+                                    <h3 class="mb-0 fw-bold"><field name="garanties_expirees"/></h3>
+                                    <span class="text-muted">Garanties expirées</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carte affectations -->
+                        <div class="col-lg-2 col-md-4 mb-3">
+                            <div class="card h-100 overflow-hidden shadow-sm border-0" style="border-radius: 12px; background-color: #f8fafc;">
+                                <div class="card-body text-center p-3">
+                                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(109, 76, 65, 0.1);">
+                                        <i class="fa fa-exchange text-brown"></i>
+                                    </div>
+                                    <h3 class="mb-0 fw-bold"><field name="affectations_actives"/></h3>
+                                    <span class="text-muted">Affectations actives</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carte abonnements -->
+                        <div class="col-lg-2 col-md-4 mb-3">
+                            <div class="card h-100 overflow-hidden shadow-sm border-0" style="border-radius: 12px; background-color: #f8fafc;">
+                                <div class="card-body text-center p-3">
+                                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(46, 125, 50, 0.1);">
+                                        <i class="fa fa-refresh text-success"></i>
+                                    </div>
+                                    <h3 class="mb-0 fw-bold"><field name="abonnements_actifs"/></h3>
+                                    <span class="text-muted">Abonnements actifs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Troisième rangée - Graphiques -->
+                    <div class="row mb-4">
+                        <!-- Graphique incidents par type -->
+                        <div class="col-lg-4 mb-3">
+                            <div class="card shadow-sm border-0 h-100" style="border-radius: 12px; overflow: hidden;">
+                                <div class="card-header bg-white py-3 border-bottom" style="border-bottom-color: #f0f0f0 !important;">
+                                    <h5 class="mb-0">Incidents par type</h5>
+                                </div>
+                                <div class="card-body p-3">
+                                    <field name="incident_type_chart" widget="pie_chart" options="{'groupby': 'type'}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Graphique matériels par client -->
+                        <div class="col-lg-4 mb-3">
+                            <div class="card shadow-sm border-0 h-100" style="border-radius: 12px; overflow: hidden;">
+                                <div class="card-header bg-white py-3 border-bottom" style="border-bottom-color: #f0f0f0 !important;">
+                                    <h5 class="mb-0">Matériels par client</h5>
+                                </div>
+                                <div class="card-body p-3">
+                                    <field name="materiel_client_chart" widget="bar_chart"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Graphique interventions par état -->
+                        <div class="col-lg-4 mb-3">
+                            <div class="card shadow-sm border-0 h-100" style="border-radius: 12px; overflow: hidden;">
+                                <div class="card-header bg-white py-3 border-bottom" style="border-bottom-color: #f0f0f0 !important;">
+                                    <h5 class="mb-0">Interventions par état</h5>
+                                </div>
+                                <div class="card-body p-3">
+                                    <field name="maintenance_etat_chart" widget="pie_chart" options="{'groupby': 'etat'}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quatrième rangée - Graphiques avancés -->
+                    <div class="row mb-4">
+                        <!-- Graphique temps de résolution -->
+                        <div class="col-lg-6 mb-3">
+                            <div class="card shadow-sm border-0 h-100" style="border-radius: 12px; overflow: hidden;">
+                                <div class="card-header bg-white py-3 border-bottom" style="border-bottom-color: #f0f0f0 !important;">
+                                    <h5 class="mb-0">Temps de résolution des tickets</h5>
+                                </div>
+                                <div class="card-body p-3">
+                                    <field name="ticket_resolution_time_chart" widget="line_chart"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Graphique top clients -->
+                        <div class="col-lg-6 mb-3">
+                            <div class="card shadow-sm border-0 h-100" style="border-radius: 12px; overflow: hidden;">
+                                <div class="card-header bg-white py-3 border-bottom" style="border-bottom-color: #f0f0f0 !important;">
+                                    <h5 class="mb-0">Top clients par CA</h5>
+                                </div>
+                                <div class="card-body p-3">
+                                    <field name="top_clients_ca_chart" widget="bar_chart"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cinquième rangée - Liste des tickets SLA dépassés -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm border-0" style="border-radius: 12px; overflow: hidden;">
+                                <div class="card-header border-bottom d-flex justify-content-between align-items-center" style="background-color: #fdeff3; border-bottom-color: #f9c9d7 !important;">
+                                    <h5 class="mb-0 text-danger">
+                                        <i class="fa fa-exclamation-circle me-1"></i> Tickets SLA dépassés
+                                    </h5>
+                                    <span class="badge bg-danger rounded-pill"><field name="tickets_sla_depasse"/></span>
+                                </div>
+                                <div class="card-body p-0">
+                                    <field name="tickets_sla_depasses_ids" widget="table">
+                                        <list decoration-danger="priorite == 'critique'" decoration-warning="priorite == 'haute'" decoration-info="priorite == 'moyenne'" decoration-success="priorite == 'faible'">
+                                            <field name="name"/>
+                                            <field name="client_id"/>
+                                            <field name="objet"/>
+                                            <field name="priorite"/>
+                                            <field name="date_creation"/>
+                                            <field name="date_limite_sla"/>
+                                            <field name="temps_restant_sla" widget="float_time"/>
+                                        </list>
+                                    </field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action pour ouvrir le dashboard -->
+    <record id="action_it_parc_dashboard" model="ir.actions.act_window">
+        <field name="name">Tableau de bord</field>
+        <field name="res_model">it.parc.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="it_parc_dashboard_view"/>
+        <field name="target">main</field>
+    </record>
+
+    <!-- Menu pour accéder au dashboard -->
+    <menuitem id="menu_it_parc_dashboard" 
+              name="Tableau de bord" 
+              parent="menu_it_parc_root" 
+              action="action_it_parc_dashboard" 
+              sequence="1"/>
+</odoo>
+
