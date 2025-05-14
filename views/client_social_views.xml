@@ -39,7 +39,8 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <!-- Ajout de l'onglet Réseaux sociaux dans la vue client -->
+    <!-- Tout est commenté ici -->
+    <!--
     <record id="view_it_parc_client_form_inherit" model="ir.ui.view">
         <field name="name">it.parc.client.form.inherit</field>
         <field name="model">it.parc.client</field>
@@ -58,4 +59,5 @@
             </notebook>
         </field>
     </record>
+    -->
 </odoo>

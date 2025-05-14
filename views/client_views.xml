@@ -39,11 +39,36 @@
                         </page>
                         
                         <page string="Adresses" name="adresses">
-                            <!-- Contenu existant -->
+                            <group>
+                                <group string="Adresse principale">
+                                    <field name="address" widget="html"/>
+                                </group>
+                                <group string="Adresse secondaire">
+                                    <field name="address_secondary" widget="html"/>
+                                </group>
+                            </group>
                         </page>
                         
                         <page string="Contacts" name="contacts">
-                            <!-- Contenu existant -->
+                            <group>
+                                <group string="Contact principal">
+                                    <field name="contact_name"/>
+                                    <field name="phone"/>
+                                    <field name="mobile"/>
+                                    <field name="email"/>
+                                    <field name="partner_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page string="Réseaux sociaux" name="social">
+                            <field name="reseaux_sociaux">
+                                <list editable="bottom">
+                                    <field name="type"/>
+                                    <field name="nom"/>
+                                    <field name="url" widget="url"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
