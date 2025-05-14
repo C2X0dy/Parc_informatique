@@ -1,143 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Form View -->
+    <!-- Menu racine pour le module -->
+    <menuitem id="menu_it_parc_root"
+              name="Parc IT"
+              web_icon="it_parc,static/description/icon.png"
+              sequence="10"/>
+    
+    <!-- Vue formulaire -->
     <record id="view_it_parc_client_form" model="ir.ui.view">
         <field name="name">it.parc.client.form</field>
         <field name="model">it.parc.client</field>
         <field name="arch" type="xml">
-            <form string="Client">
-
+            <form>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_contrats" type="object" class="oe_stat_button" icon="fa-file-text-o">
-                            <field name="contrat_count" widget="statinfo" string="Contrats"/>
-                        </button>
-                        <button name="action_view_materiels" type="object" class="oe_stat_button" icon="fa-laptop">
-                            <field name="materiel_count" widget="statinfo" string="Matériels"/>
-                        </button>
-                        <button name="action_view_incidents" type="object" class="oe_stat_button" icon="fa-exclamation-triangle">
-                            <field name="incident_count" widget="statinfo" string="Incidents"/>
-                        </button>
-                        <button name="action_view_sites" type="object" class="oe_stat_button" icon="fa-building">
-                            <field name="site_count" widget="statinfo" string="Sites"/>
-                        </button>
-                    </div>
-                    <field name="active" invisible="1"/>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Raison sociale"/>
+                            <field name="name" placeholder="Nom du client"/>
                         </h1>
                     </div>
                     <notebook>
-                        <page string="Informations générales" name="general_info">
+                        <page string="Informations" name="informations">
                             <group>
-                                <group>
+                                <group string="Identification">
                                     <field name="code"/>
                                     <field name="type_client"/>
                                     <field name="siret"/>
-                                    <field name="total_postes"/>
+                                    <field name="secteur_activite"/>
+                                    <field name="taille_entreprise"/>
+                                    <field name="date_creation"/>
+                                    <field name="site_web" widget="url"/>
                                 </group>
-                                <group>
-                                    <field name="address" placeholder="Adresse principale..."/>
-                                    <field name="address_secondary" placeholder="Adresse secondaire..."/>
-                                    <field name="portal_url" widget="url"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page string="Contact principal" name="contact">
-                            <group>
-                                <group>
-                                    <field name="contact_name"/>
-                                    <field name="email"/>
-                                </group>
-                                <group>
-                                    <field name="phone"/>
-                                    <field name="mobile"/>
+                                <group string="Personnalisation">
+                                    <field name="couleur_primaire" widget="color"/>
+                                    <field name="couleur_secondaire" widget="color"/>
+                                    <field name="presentation" widget="html"/>
                                 </group>
                             </group>
                         </page>
-                        <page string="Sites" name="sites">
-                            <!-- Correction ici: utiliser la valeur id au lieu de active_id -->
-                            <field name="site_ids" context="{'default_client_id': id}">
-                                <list>
-                                    <field name="name"/>
-                                    <field name="code"/>
-                                    <!-- On remplace le champ adresse par un accès via bouton -->
-                                </list>
-                            </field>
+                        
+                        <page string="Adresses" name="adresses">
+                            <!-- Contenu existant -->
+                        </page>
+                        
+                        <page string="Contacts" name="contacts">
+                            <!-- Contenu existant -->
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
-                </div>
             </form>
         </field>
     </record>
 
-    <!-- List View -->
+    <!-- Vue liste pour les clients -->
     <record id="view_it_parc_client_list" model="ir.ui.view">
         <field name="name">it.parc.client.list</field>
         <field name="model">it.parc.client</field>
         <field name="arch" type="xml">
-            <list string="Clients">
+            <list>
                 <field name="name"/>
                 <field name="code"/>
                 <field name="type_client"/>
-                <field name="contact_name"/>
-                <field name="phone"/>
-                <field name="email"/>
-                <field name="total_postes" sum="Total postes"/>
-                <field name="contrat_count"/>
-                <field name="materiel_count"/>
-                <field name="incident_count"/>
+                <field name="site_web"/>
+                <field name="secteur_activite"/>
             </list>
         </field>
     </record>
 
-    <!-- Search View -->
-    <record id="view_it_parc_client_search" model="ir.ui.view">
-        <field name="name">it.parc.client.search</field>
-        <field name="model">it.parc.client</field>
-        <field name="arch" type="xml">
-            <search string="Clients">
-                <field name="name"/>
-                <field name="code"/>
-                <field name="siret"/>
-                <field name="contact_name"/>
-                <field name="email"/>
-                <field name="phone"/>
-                <separator/>
-                <filter string="PME" name="pme" domain="[('type_client', '=', 'pme')]"/>
-                <filter string="Collectivité" name="collectivite" domain="[('type_client', '=', 'collectivite')]"/>
-                <filter string="Grand compte" name="grand_compte" domain="[('type_client', '=', 'grand_compte')]"/>
-                <separator/>
-                <filter string="Archivé" name="inactive" domain="[('active', '=', False)]"/>
-                <group expand="0" string="Regrouper par">
-                    <filter name="group_by_type" string="Type de client" context="{'group_by': 'type_client'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-    <!-- Action -->
+    <!-- Action window pour le modèle principal -->
     <record id="action_it_parc_client" model="ir.actions.act_window">
         <field name="name">Clients</field>
         <field name="res_model">it.parc.client</field>
-        <field name="view_mode">list,form</field>  <!-- Assurez-vous que c'est "list" et non "tree" -->
-        <field name="search_view_id" ref="view_it_parc_client_search"/>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Créer votre premier client
-            </p>
-        </field>
+        <field name="view_mode">list,form</field>
     </record>
 
-    <!-- Menu -->
-    <menuitem id="menu_it_parc_root" name="Parc IT" sequence="10"/>
-    <menuitem id="menu_it_parc_client" name="Clients" parent="menu_it_parc_root" action="action_it_parc_client" sequence="10"/>
-    <menuitem id="menu_it_parc_ticket" name="Tickets" parent="menu_it_parc_root" action="action_it_parc_ticket" sequence="35"/>
+    <!-- Menu item pour accéder aux clients -->
+    <menuitem id="menu_it_parc_client"
+              name="Clients"
+              action="action_it_parc_client"
+              parent="menu_it_parc_root"
+              sequence="10"/>
 </odoo>
 

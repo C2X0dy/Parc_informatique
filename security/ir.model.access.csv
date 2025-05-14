@@ -5,24 +5,25 @@ access_it_parc_contrat_user,it.parc.contrat.user,model_it_parc_contrat,base.grou
 access_it_parc_incident_user,it.parc.incident.user,model_it_parc_incident,base.group_user,1,1,1,1
 access_it_parc_facturation_user,it.parc.facturation.user,model_it_parc_facturation,base.group_user,1,1,1,1
 access_it_parc_maintenance_user,it.parc.maintenance.user,model_it_parc_maintenance,base.group_user,1,1,1,1
+access_it_parc_maintenance_preventive_user,it.parc.maintenance.preventive.user,model_it_parc_maintenance_preventive,base.group_user,1,1,1,1
 access_it_parc_affectation_user,it.parc.affectation.user,model_it_parc_affectation,base.group_user,1,1,1,1
 access_it_parc_dashboard_user,it.parc.dashboard.user,model_it_parc_dashboard,base.group_user,1,1,1,0
 access_it_parc_materiel_categorie_user,it.parc.materiel.categorie.user,model_it_parc_materiel_categorie,base.group_user,1,1,1,1
+access_it_parc_materiel_amortissement_user,it.parc.materiel.amortissement.user,model_it_parc_materiel_amortissement,base.group_user,1,1,1,1
 access_it_parc_site_user,it.parc.site.user,model_it_parc_site,base.group_user,1,1,1,1
 access_it_parc_ticket_user,it.parc.ticket.user,model_it_parc_ticket,base.group_user,1,1,1,1
 access_it_parc_ticket_historique_user,it.parc.ticket.historique.user,model_it_parc_ticket_historique,base.group_user,1,1,1,1
 access_it_parc_abonnement_user,it.parc.abonnement.user,model_it_parc_abonnement,base.group_user,1,1,1,1
 access_it_parc_abonnement_ligne_user,it.parc.abonnement.ligne.user,model_it_parc_abonnement_ligne,base.group_user,1,1,1,1
-access_it_parc_materiel_amortissement_user,it.parc.materiel.amortissement.user,model_it_parc_materiel_amortissement,base.group_user,1,1,1,1
-<<<<<<< HEAD
-access_it_parc_incident_portal,it.parc.incident portal,model_it_parc_incident,base.group_portal,1,0,1,0
-access_it_parc_materiel_portal,it.parc.materiel portal,model_it_parc_materiel,base.group_portal,1,0,0,0
-access_it_parc_client_portal,it.parc.client portal,model_it_parc_client,base.group_portal,1,0,0,0
-access_it_parc_site_portal,it.parc.site portal,model_it_parc_site,base.group_portal,1,0,0,0
-access_it_parc_materiel_categorie_portal,it.parc.materiel.categorie portal,model_it_parc_materiel_categorie,base.group_portal,1,0,0,0
-=======
+access_it_parc_client_social_user,it.parc.client.social user,model_it_parc_client_social,base.group_user,1,1,1,1
 
->>>>>>> 0187f55f20550ada9abbc6603375c8bb8e8e18dc
+access_it_parc_incident_portal,it.parc.incident.portal,model_it_parc_incident,base.group_portal,1,0,1,0
+access_it_parc_materiel_portal,it.parc.materiel.portal,model_it_parc_materiel,base.group_portal,1,0,0,0
+access_it_parc_client_portal,it.parc.client.portal,model_it_parc_client,base.group_portal,1,0,0,0
+access_it_parc_site_portal,it.parc.site.portal,model_it_parc_site,base.group_portal,1,0,0,0
+access_it_parc_materiel_categorie_portal,it.parc.materiel.categorie.portal,model_it_parc_materiel_categorie,base.group_portal,1,0,0,0
+access_it_parc_contrat_portal,it.parc.contrat.portal,model_it_parc_contrat,base.group_portal,1,0,0,0
+access_it_parc_facturation_portal,it.parc.facturation.portal,model_it_parc_facturation,base.group_portal,1,0,0,0
 
 
 

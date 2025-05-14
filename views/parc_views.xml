@@ -402,5 +402,271 @@
     <menuitem id="menu_it_parc_site" name="Sites" parent="menu_it_parc_materiel_configuration" action="action_it_parc_site" sequence="20"/>
     <menuitem id="menu_it_parc_amortissement" name="Amortissements" 
           parent="menu_it_parc_materiel_configuration" action="action_it_parc_materiel_amortissement" sequence="30"/>
+    
+    <!-- Templates de portail pour les contrats -->
+    <template id="portal_my_contracts" name="My Contracts">
+        <t t-call="portal.portal_layout">
+            <div class="container pt-3">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="mb-0">Mes contrats</h2>
+                        <p class="text-muted">Contrats de services et supports actifs</p>
+                    </div>
+                </div>
+                
+                <!-- Stats cards -->
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-success text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-check-circle fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Contrats actifs</span>
+                                        <h3 class="mb-0"><t t-esc="contracts_actifs or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-file-contract fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Total contrats</span>
+                                        <h3 class="mb-0"><t t-esc="contracts_total or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-info text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-calendar-alt fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">À renouveler</span>
+                                        <h3 class="mb-0"><t t-esc="contracts_to_renew_count or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Liste des contrats -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Mes contrats</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Référence</th>
+                                        <th>Type</th>
+                                        <th>Date de début</th>
+                                        <th>Date de fin</th>
+                                        <th>Statut</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="contracts or []" t-as="contract">
+                                        <td><t t-esc="contract.name"/></td>
+                                        <td><t t-esc="contract.type"/></td>
+                                        <td><t t-esc="contract.date_debut" t-options="{'widget': 'date'}"/></td>
+                                        <td><t t-esc="contract.date_fin" t-options="{'widget': 'date'}"/></td>
+                                        <td>
+                                            <span t-if="contract.etat == 'draft'" class="badge bg-secondary">Brouillon</span>
+                                            <span t-elif="contract.etat == 'en_attente'" class="badge bg-info">En attente</span>
+                                            <span t-elif="contract.etat == 'actif'" class="badge bg-success">Actif</span>
+                                            <span t-elif="contract.etat == 'expire'" class="badge bg-danger">Expiré</span>
+                                            <span t-elif="contract.etat == 'resilie'" class="badge bg-dark">Résilié</span>
+                                            <span t-else="" class="badge bg-secondary">Autre</span>
+                                        </td>
+                                        <td class="text-end">
+                                            <a t-att-href="'/my/contract/%s' % contract.id" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-eye me-1"></i> Voir détail
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="not contracts or len(contracts) == 0">
+                                        <td colspan="6" class="text-center text-muted py-4">
+                                            Aucun contrat trouvé
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-center bg-white" t-if="pager">
+                        <t t-call="portal.pager"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template pour le détail d'un contrat -->
+    <template id="portal_contract_detail" name="Contract Details">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h2 class="mb-0"><t t-esc="contrat.name"/></h2>
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item">
+                                        <a href="/my/home">Accueil</a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="/my/contracts">Contrats</a>
+                                    </li>
+                                    <li class="breadcrumb-item active">
+                                        <t t-esc="contrat.name"/>
+                                    </li>
+                                </ol>
+                            </div>
+                            <a href="/my/contracts" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left me-1"></i> Retour
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h4 class="mb-0">Détails du contrat</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <p><strong>Type:</strong> <t t-esc="contrat.type"/></p>
+                                        <p><strong>Montant forfaitaire:</strong> <t t-esc="contrat.montant"/> <t t-esc="contrat.devise"/></p>
+                                        <p><strong>Fréquence de facturation:</strong> <t t-esc="contrat.frequence_facturation"/></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Date de début:</strong> <t t-esc="contrat.date_debut" t-options="{'widget': 'date'}"/></p>
+                                        <p><strong>Date de fin:</strong> <t t-esc="contrat.date_fin" t-options="{'widget': 'date'}"/></p>
+                                        <p><strong>Jours avant échéance:</strong> <t t-esc="contrat.jours_avant_echeance"/></p>
+                                    </div>
+                                </div>
+                                
+                                <h5>Description</h5>
+                                <div class="mb-4">
+                                    <p t-field="contrat.description" class="text-pre-wrap"/>
+                                </div>
+                                
+                                <div t-if="contrat.sla_details">
+                                    <h5>Détails des SLA</h5>
+                                    <p t-field="contrat.sla_details" class="text-pre-wrap"/>
+                                </div>
+                                
+                                <div t-if="contrat.tarifs_supplementaires">
+                                    <h5>Tarifs supplémentaires</h5>
+                                    <p t-field="contrat.tarifs_supplementaires" class="text-pre-wrap"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card shadow-sm mb-4" t-if="materiels and materiels">
+                            <div class="card-header bg-white">
+                                <h4 class="mb-0">Équipements couverts</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Référence</th>
+                                            <th>Nom</th>
+                                            <th>Type</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="materiels" t-as="material">
+                                            <td><t t-esc="material.reference"/></td>
+                                            <td><t t-esc="material.name"/></td>
+                                            <td><t t-esc="material.type"/></td>
+                                            <td>
+                                                <a t-att-href="'/my/material/%s' % material.id" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h4 class="mb-0">Statut</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <strong>État:</strong>
+                                    <div class="mt-1">
+                                        <span t-if="contrat.etat == 'draft'" class="badge bg-secondary">Brouillon</span>
+                                        <span t-elif="contrat.etat == 'en_attente'" class="badge bg-info">En attente</span>
+                                        <span t-elif="contrat.etat == 'actif'" class="badge bg-success">Actif</span>
+                                        <span t-elif="contrat.etat == 'expire'" class="badge bg-danger">Expiré</span>
+                                        <span t-elif="contrat.etat == 'resilie'" class="badge bg-dark">Résilié</span>
+                                        <span t-else="" class="badge bg-secondary">Autre</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Référence interne:</strong>
+                                    <div><t t-esc="contrat.reference or '-'"/></div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Montant total:</strong>
+                                    <div><t t-esc="contrat.montant_total"/> <t t-esc="contrat.devise"/></div>
+                                </div>
+                                <div class="mb-3" t-if="contrat.alerte_renouvellement">
+                                    <div class="alert alert-warning">
+                                        <i class="fa fa-exclamation-triangle me-2"></i>
+                                        Ce contrat arrive à échéance dans <strong><t t-esc="contrat.jours_avant_echeance"/> jours</strong>. 
+                                        Pensez à contacter votre gestionnaire pour le renouvellement.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h4 class="mb-0">SLA</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <strong>Délai de résolution garanti:</strong>
+                                    <div><t t-esc="contrat.sla_delai_resolution or '-'"/> heures</div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Interventions incluses:</strong>
+                                    <div><t t-esc="contrat.sla_interventions_inclus or '-'"/></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
 </odoo>
 

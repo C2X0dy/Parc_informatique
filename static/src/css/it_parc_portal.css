@@ -1,59 +1,313 @@
-/* Portal specific styling */
-.o_portal_wrap .table {
-    border-collapse: separate;
-    border-spacing: 0;
+/* Design moderne pour le portail client IT Parc */
+
+/* Base styling */
+.o_portal_wrap {
+    background-color: #f8f9fa;
+    color: #2c3e50;
 }
 
+/* Card styling with elegant shadow and transition */
 .o_portal_wrap .card {
-    border-radius: 12px;
+    border-radius: 15px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     border: none;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .o_portal_wrap .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
 }
 
+/* Card headers with subtle gradient background */
+.o_portal_wrap .card-header {
+    background: linear-gradient(120deg, #f8f9fa, #f1f2f3);
+    border-bottom: 1px solid #eaecef;
+    padding: 1.2rem 1.5rem;
+}
+
+/* Badge styling with more padding and rounded corners */
 .o_portal_wrap .badge {
-    padding: 0.5em 0.8em;
+    padding: 0.5em 1em;
     font-weight: 500;
+    letter-spacing: 0.3px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+/* Table styling with better spacing */
+.o_portal_wrap .table {
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 0;
 }
 
 .o_portal_wrap .table thead th {
     background-color: #f9fafb;
     font-weight: 600;
     border-bottom: 2px solid #e9ecef;
+    padding: 1rem 1.2rem;
+    color: #5a6268;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.o_portal_wrap .table td {
+    padding: 1rem 1.2rem;
+    vertical-align: middle;
 }
 
 .o_portal_wrap .table-hover tbody tr:hover {
-    background-color: #f5f7fa;
+    background-color: rgba(97, 174, 255, 0.05);
+    transition: all 0.2s ease;
 }
 
 /* Custom rounded corners for table */
 .o_portal_wrap .table-responsive {
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 /* Custom button styling */
+.o_portal_wrap .btn {
+    border-radius: 10px;
+    padding: 0.5rem 1.2rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
 .o_portal_wrap .btn-primary {
-    background-color: #3c4ea0;
-    border-color: #3c4ea0;
+    background: linear-gradient(45deg, #3c4ea0, #5a6acf);
+    border: none;
 }
 
 .o_portal_wrap .btn-primary:hover {
-    background-color: #344089;
-    border-color: #344089;
+    background: linear-gradient(45deg, #344089, #4a5abc);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(60, 78, 160, 0.3);
 }
 
-/* Shadow for floating effect */
-.o_portal_wrap .shadow-sm {
-    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
+.o_portal_wrap .btn-secondary {
+    background: linear-gradient(45deg, #6c757d, #868e96);
+    border: none;
+}
+
+.o_portal_wrap .btn-secondary:hover {
+    background: linear-gradient(45deg, #5a6268, #737980);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+}
+
+.o_portal_wrap .btn-outline-primary {
+    color: #3c4ea0;
+    border-color: #3c4ea0;
+    background: white;
+}
+
+.o_portal_wrap .btn-outline-primary:hover {
+    background-color: #3c4ea0;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(60, 78, 160, 0.2);
+}
+
+/* Icons in buttons */
+.o_portal_wrap .btn i {
+    margin-right: 6px;
+}
+
+/* Icon circles */
+.circle-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-right: 1rem;
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+}
+
+/* Status badge colors */
+.o_portal_wrap .badge.bg-success {
+    background: linear-gradient(45deg, #28a745, #5cc983) !important;
+}
+
+.o_portal_wrap .badge.bg-warning {
+    background: linear-gradient(45deg, #ffc107, #ffda75) !important;
+    color: #664d03;
+}
+
+.o_portal_wrap .badge.bg-danger {
+    background: linear-gradient(45deg, #dc3545, #f27685) !important;
+}
+
+.o_portal_wrap .badge.bg-info {
+    background: linear-gradient(45deg, #17a2b8, #5ccde0) !important;
+}
+
+.o_portal_wrap .badge.bg-primary {
+    background: linear-gradient(45deg, #3c4ea0, #7a8ad3) !important;
+}
+
+.o_portal_wrap .badge.bg-secondary {
+    background: linear-gradient(45deg, #6c757d, #9ca4ab) !important;
+}
+
+/* Dashboard card enhancements */
+.o_portal_wrap .dashboard-card {
+    height: 100%;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.o_portal_wrap .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.o_portal_wrap .dashboard-card .card-body {
+    padding: 2rem;
 }
 
 /* Text formatting */
 .text-pre-wrap {
     white-space: pre-wrap;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Shadow for floating effect */
+.o_portal_wrap .shadow-sm {
+    box-shadow: 0 .125rem .5rem rgba(0,0,0,.08) !important;
+}
+
+/* Dashboard stat numbers */
+.o_portal_wrap .stat-value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #3c4ea0;
+    margin-bottom: 0;
+}
+
+.o_portal_wrap .stat-label {
+    color: #6c757d;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    margin-bottom: 0;
+}
+
+/* QR Code styling */
+.qr-code-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.qr-code-container img {
+    border: 8px solid white;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.07);
+    border-radius: 10px;
+}
+
+/* AI assistant widget */
+.ai-assistant-widget {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+}
+
+.ai-assistant-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 5px 25px rgba(60, 78, 160, 0.3);
+    background: linear-gradient(135deg, #3c4ea0, #5a6acf);
+}
+
+.ai-assistant-panel {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 350px;
+    border-radius: 15px !important;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Timeline styling */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 2rem;
+}
+
+.timeline:before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e9ecef;
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -2rem;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #3c4ea0;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px #e9ecef;
+}
+
+.timeline-content {
+    padding: 1rem 1.5rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Chart container styling */
+.chart-container {
+    position: relative;
+    height: 250px;
+    margin-bottom: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .o_portal_wrap .circle-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 0.9rem;
+    }
+    
+    .o_portal_wrap .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .o_portal_wrap .card-header {
+        padding: 1rem;
+    }
 }

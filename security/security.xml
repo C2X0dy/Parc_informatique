@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<<<<<<< HEAD
     <data noupdate="0">
         <!-- Groups -->
         <record id="group_it_parc_admin" model="res.groups">
@@ -41,9 +40,30 @@
             <field name="perm_create" eval="False"/>
             <field name="perm_unlink" eval="False"/>
         </record>
+
+        <!-- Access rule for contracts in portal -->
+        <record id="it_parc_contrat_rule_portal" model="ir.rule">
+            <field name="name">Client can see own contracts</field>
+            <field name="model_id" ref="model_it_parc_contrat"/>
+            <field name="domain_force">[('client_id.partner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Access rule for invoices in portal -->
+        <record id="it_parc_facture_rule_portal" model="ir.rule">
+            <field name="name">Client can see own invoices</field>
+            <field name="model_id" ref="model_it_parc_facturation"/>
+            <field name="domain_force">[('client_id.partner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
     </data>
-=======
-    <!-- Contenu à ajouter plus tard -->
->>>>>>> 0187f55f20550ada9abbc6603375c8bb8e8e18dc
 </odoo>
 

@@ -231,12 +231,13 @@ class TicketIncident(models.Model):
             'description': description
         })
     
-    @api.model
-    def create(self, vals):
-        result = super(TicketIncident, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        results = super(TicketIncident, self).create(vals_list)
         # Créer une entrée dans l'historique lors de la création
-        result._create_action_history('creation', 'Ticket créé')
-        return result
+        for result in results:
+            result._create_action_history('creation', 'Ticket créé')
+        return results
     
     def write(self, vals):
         # Traçabilité des changements importants

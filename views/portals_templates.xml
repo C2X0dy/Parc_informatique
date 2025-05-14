@@ -10,45 +10,185 @@
         </xpath>
     </template>
     -->
-<<<<<<< HEAD
+
     <!-- Add menu items to portal home -->
     <template id="portal_my_home_it_parc" name="Portal IT Parc" inherit_id="portal.portal_my_home" priority="30">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white">
-                    <h4 class="mb-0">Mon Parc Informatique</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6 mb-4">
-                            <a href="/my/incidents" class="text-reset text-decoration-none">
-                                <div class="card shadow-sm h-100">
-                                    <div class="card-body d-flex">
-                                        <div class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                            <i class="fa fa-exclamation-triangle"></i>
-                                        </div>
-                                        <div>
-                                            <h5 class="mb-1">Mes incidents</h5>
-                                            <p class="text-muted mb-0">Suivi de vos incidents déclarés</p>
-                                        </div>
-                                    </div>
-                                </div>
+            <!-- Header section with welcome message -->
+            <div class="card shadow mb-4 border-0">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="mb-2">Bienvenue sur votre Espace IT</h2>
+                            <p class="lead text-muted mb-0">Gérez votre parc informatique et suivez vos demandes d'assistance</p>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                            <a href="/my/dashboard" class="btn btn-primary">
+                                <i class="fa fa-tachometer-alt"></i> Tableau de bord
                             </a>
                         </div>
-                        <div class="col-lg-6 mb-4">
-                            <a href="/my/materials" class="text-reset text-decoration-none">
-                                <div class="card shadow-sm h-100">
-                                    <div class="card-body d-flex">
-                                        <div class="rounded-circle bg-success text-white me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                            <i class="fa fa-laptop"></i>
-                                        </div>
-                                        <div>
-                                            <h5 class="mb-1">Mes équipements</h5>
-                                            <p class="text-muted mb-0">Liste de vos équipements</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main service grid -->
+            <h4 class="mb-3">Services disponibles</h4>
+            <div class="row mb-4">
+                <!-- Incidents -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <a href="/my/incidents" class="text-reset text-decoration-none">
+                        <div class="card shadow-sm h-100 dashboard-card">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="circle-icon bg-primary text-white">
+                                        <i class="fa fa-exclamation-triangle fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Mes incidents</h5>
+                                        <p class="text-muted mb-0">Suivi de vos demandes d'assistance</p>
+                                        <div class="mt-2">
+                                            <span class="badge bg-info"><t t-esc="incident_count or 0"/> tickets</span>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Équipements -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <a href="/my/materials" class="text-reset text-decoration-none">
+                        <div class="card shadow-sm h-100 dashboard-card">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="circle-icon bg-success text-white">
+                                        <i class="fa fa-laptop fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Mes équipements</h5>
+                                        <p class="text-muted mb-0">Inventaire de votre parc</p>
+                                        <div class="mt-2">
+                                            <span class="badge bg-success"><t t-esc="materiel_count or 0"/> équipements</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Contrats -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <a href="/my/contracts" class="text-reset text-decoration-none">
+                        <div class="card shadow-sm h-100 dashboard-card">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="circle-icon bg-warning text-white">
+                                        <i class="fa fa-file-contract fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Mes contrats</h5>
+                                        <p class="text-muted mb-0">Services et garanties</p>
+                                        <div class="mt-2">
+                                            <span class="badge bg-warning text-dark"><t t-esc="contrat_count or 0"/> contrats</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Factures -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <a href="/my/invoices" class="text-reset text-decoration-none">
+                        <div class="card shadow-sm h-100 dashboard-card">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="circle-icon bg-danger text-white">
+                                        <i class="fa fa-file-invoice fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Mes factures</h5>
+                                        <p class="text-muted mb-0">Suivi de vos paiements</p>
+                                        <div class="mt-2">
+                                            <span class="badge bg-danger"><t t-esc="facture_count or 0"/> factures</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Documents -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <a href="/my/documents" class="text-reset text-decoration-none">
+                        <div class="card shadow-sm h-100 dashboard-card">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="circle-icon bg-secondary text-white">
+                                        <i class="fa fa-folder-open fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Mes documents</h5>
+                                        <p class="text-muted mb-0">Guides et documentation</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Support -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <a href="/my/create/incident" class="text-reset text-decoration-none">
+                        <div class="card shadow-sm h-100 dashboard-card">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="circle-icon bg-info text-white">
+                                        <i class="fa fa-headset fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Support technique</h5>
+                                        <p class="text-muted mb-0">Créer un nouveau ticket</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Recent activities section -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Activités récentes</h4>
+                    <a href="/my/dashboard" class="btn btn-sm btn-outline-primary">Voir tout</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item py-3 px-4">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1"><i class="fa fa-check-circle text-success me-2"></i> Ticket #IT-001 résolu</h5>
+                                <small class="text-muted">Il y a 3 jours</small>
+                            </div>
+                            <p class="mb-1">Problème de connexion réseau résolu par notre équipe technique.</p>
+                        </div>
+                        <div class="list-group-item py-3 px-4">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1"><i class="fa fa-laptop text-primary me-2"></i> Nouvel équipement ajouté</h5>
+                                <small class="text-muted">La semaine dernière</small>
+                            </div>
+                            <p class="mb-1">Ordinateur portable DELL XPS 15 ajouté à votre inventaire.</p>
+                        </div>
+                        <div class="list-group-item py-3 px-4">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1"><i class="fa fa-file-contract text-warning me-2"></i> Contrat mis à jour</h5>
+                                <small class="text-muted">Il y a 2 semaines</small>
+                            </div>
+                            <p class="mb-1">Mise à jour des termes du contrat de maintenance #C-2023-05.</p>
                         </div>
                     </div>
                 </div>
@@ -392,6 +532,16 @@
                                 </a>
                             </div>
                         </div>
+
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h4 class="mb-0">QR Code</h4>
+                            </div>
+                            <div class="card-body text-center">
+                                <p>Scannez ce code pour accéder rapidement à la fiche de cet équipement</p>
+                                <img t-att-src="'/it_parc/qrcode?data=%s' % materiel.id" alt="QR Code" class="img-fluid" style="max-width: 200px;"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -582,7 +732,888 @@
             </li>
         </xpath>
     </template>
-=======
->>>>>>> 0187f55f20550ada9abbc6603375c8bb8e8e18dc
+
+    <template id="portal_documents" name="My Documents">
+        <t t-call="portal.portal_layout">
+            <div class="container pt-3">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="mb-0">Mes documents</h2>
+                        <p class="text-muted">Documentation technique et contractuelle</p>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Documents disponibles</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Type</th>
+                                    <th>Date</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="documents" t-as="doc">
+                                    <td><t t-esc="doc.name"/></td>
+                                    <td><t t-esc="doc.type"/></td>
+                                    <td><t t-esc="doc.date" t-options="{'widget': 'date'}"/></td>
+                                    <td class="text-end">
+                                        <a t-att-href="doc.url" class="btn btn-sm btn-primary" target="_blank">
+                                            <i class="fa fa-download me-1"></i> Télécharger
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_invoices" name="My Invoices">
+        <t t-call="portal.portal_layout">
+            <div class="container pt-3">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="mb-0">Mes factures</h2>
+                        <p class="text-muted">Suivi de vos factures et paiements</p>
+                    </div>
+                </div>
+                
+                <!-- Stats cards -->
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-warning text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-clock-o fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">À payer</span>
+                                        <h3 class="mb-0"><t t-esc="invoices_to_pay_count or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-success text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-check-circle fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Payées</span>
+                                        <h3 class="mb-0"><t t-esc="invoices_paid_count or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-file-text-o fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Total factures</span>
+                                        <h3 class="mb-0"><t t-esc="invoices_total_count or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm">
+                    <!-- Table of invoices -->
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- New maintenance calendar template -->
+    <template id="portal_maintenance_calendar" name="Maintenance Schedule">
+        <t t-call="portal.portal_layout">
+            <div class="container pt-3">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="mb-0">Calendrier de maintenance</h2>
+                        <p class="text-muted">Interventions prévues sur vos équipements</p>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm mb-4">
+                    <!-- Calendar view would go here -->
+                </div>
+                
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Prochaines interventions</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Date prévue</th>
+                                    <th>Type</th>
+                                    <th>Équipement</th>
+                                    <th>Description</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- List of upcoming maintenance -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_it_health" name="IT Health Dashboard">
+        <t t-call="portal.portal_layout">
+            <div class="container pt-3">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="mb-0">Santé informatique</h2>
+                        <p class="text-muted">État de votre système informatique</p>
+                    </div>
+                </div>
+                
+                <!-- Global health score -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body text-center">
+                        <h3 class="mb-3">Score de santé global</h3>
+                        <div class="health-gauge mx-auto mb-3" style="width: 200px; height: 200px;">
+                            <!-- Interactive gauge visualization -->
+                        </div>
+                        <div class="health-score-label">
+                            <span t-attf-class="badge bg-{{health_score >= 80 ? 'success' : (health_score >= 60 ? 'warning' : 'danger')}} p-2 fs-5">
+                                <t t-esc="health_score"/>%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Detailed health metrics -->
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Sécurité</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Security metrics -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Performance</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Performance metrics -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Sauvegardes</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Backup metrics -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_equipment_lifecycle" name="Equipment Lifecycle">
+        <t t-call="portal.portal_layout">
+            <div class="container pt-3">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="mb-0">Cycle de vie des équipements</h2>
+                        <p class="text-muted">Suivi du vieillissement et prévisions de renouvellement</p>
+                    </div>
+                </div>
+                
+                <!-- Budget prediction -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Prévisions budgétaires</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <!-- Budget forecast chart -->
+                            </div>
+                            <div class="col-md-4">
+                                <div class="budget-summary p-3 border rounded">
+                                    <h5>Renouvellements prévus</h5>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Cette année:</span>
+                                        <strong><t t-esc="current_year_budget"/> €</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Prochain exercice:</span>
+                                        <strong><t t-esc="next_year_budget"/> €</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Dans 2 ans:</span>
+                                        <strong><t t-esc="year_after_budget"/> €</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Equipment aging by category -->
+                <div class="card shadow-sm mb-4">
+                    <!-- Equipment aging visualization -->
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_ai_assistant" name="IT Assistant" inherit_id="portal.portal_layout">
+        <xpath expr="//div[hasclass('o_portal_wrap')]" position="inside">
+            <div class="ai-assistant-widget">
+                <button class="ai-assistant-toggle btn btn-primary rounded-circle">
+                    <i class="fa fa-comments"></i>
+                </button>
+                <div class="ai-assistant-panel card shadow-sm d-none">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Assistant IT</h5>
+                        <button class="btn-close btn-close-white ai-assistant-close"></button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="ai-chat-messages p-3" style="height: 300px; overflow-y: auto;">
+                            <!-- Messages will appear here -->
+                            <div class="ai-message-bot mb-3">
+                                <div class="ai-message-content bg-light p-2 rounded">
+                                    Bonjour ! Comment puis-je vous aider aujourd'hui ?
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-chat-input p-2 border-top">
+                            <form class="d-flex">
+                                <input type="text" class="form-control me-2" placeholder="Posez votre question..."/>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="portal_service_status" name="Service Status">
+    <t t-call="portal.portal_layout">
+        <div class="container pt-3">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-0">État des services</h2>
+                    <p class="text-muted">Suivi en temps réel de vos services</p>
+                </div>
+            </div>
+            
+            <!-- Service status overview -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">État global</h4>
+                    <span class="badge bg-success px-3 py-2">Tous les systèmes opérationnels</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>État</th>
+                                    <th>Dernière vérification</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- List of services with status -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Incident timeline -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">Historique des incidents</h4>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <!-- Incident timeline items -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
+
+<template id="portal_dashboard" name="IT Dashboard">
+    <t t-call="portal.portal_layout">
+        <div class="container py-4">
+            <!-- Dashboard Header -->
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="text-primary mb-1">Tableau de bord IT</h2>
+                            <p class="text-muted mb-0">Vue d'ensemble de votre infrastructure informatique</p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <span class="badge bg-success px-3 py-2">
+                                <i class="fa fa-check-circle me-1"></i> Tous les systèmes opérationnels
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Key Metrics -->
+            <div class="row mb-4">
+                <!-- État du parc -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="circle-icon bg-primary text-white me-3">
+                                    <i class="fa fa-server fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h6 class="stat-label">État du parc</h6>
+                                    <h3 class="stat-value">98%</h3>
+                                </div>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 98%" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Incidents -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="circle-icon bg-warning text-white me-3">
+                                    <i class="fa fa-exclamation-triangle fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h6 class="stat-label">Incidents ce mois</h6>
+                                    <h3 class="stat-value"><t t-esc="incidents_mois"/></h3>
+                                </div>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Temps de résolution -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="circle-icon bg-success text-white me-3">
+                                    <i class="fa fa-clock fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h6 class="stat-label">Temps de résolution</h6>
+                                    <h3 class="stat-value"><t t-esc="round(temps_resolution, 1)"/>h</h3>
+                                </div>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Satisfaction -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="circle-icon bg-info text-white me-3">
+                                    <i class="fa fa-smile fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h6 class="stat-label">Satisfaction client</h6>
+                                    <h3 class="stat-value">96%</h3>
+                                </div>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 96%" aria-valuenow="96" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts and Data -->
+            <div class="row mb-4">
+                <!-- Incidents chart -->
+                <div class="col-lg-8 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Évolution des incidents</h5>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-outline-secondary active">30 jours</button>
+                                <button type="button" class="btn btn-outline-secondary">3 mois</button>
+                                <button type="button" class="btn btn-outline-secondary">Année</button>
+                            </div>
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="chart-container">
+                                <!-- Chart would be rendered here via JS -->
+                                <div class="d-flex align-items-center justify-content-center h-100">
+                                    <p class="text-muted">Graphique non disponible en mode prévisualisation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Status -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Santé de l'infrastructure</h5>
+                        </div>
+                        <div class="card-body p-3">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <div>
+                                        <i class="fa fa-server text-success me-2"></i>
+                                        Serveurs
+                                    </div>
+                                    <span class="badge bg-success">100%</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <div>
+                                        <i class="fa fa-wifi text-success me-2"></i>
+                                        Réseau
+                                    </div>
+                                    <span class="badge bg-success">99.8%</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <div>
+                                        <i class="fa fa-database text-success me-2"></i>
+                                        Stockage
+                                    </div>
+                                    <span class="badge bg-success">99.9%</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <div>
+                                        <i class="fa fa-shield-alt text-success me-2"></i>
+                                        Sécurité
+                                    </div>
+                                    <span class="badge bg-success">100%</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <div>
+                                        <i class="fa fa-desktop text-warning me-2"></i>
+                                        Postes de travail
+                                    </div>
+                                    <span class="badge bg-warning text-dark">96%</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Incidents & Activities -->
+            <div class="row">
+                <!-- Recent Incidents -->
+                <div class="col-lg-7 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Incidents récents</h5>
+                            <a href="/my/incidents" class="btn btn-sm btn-outline-primary">
+                                <i class="fa fa-arrow-right"></i> Tout voir
+                            </a>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Référence</th>
+                                            <th>Description</th>
+                                            <th>Statut</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>IT-2023-056</td>
+                                            <td>Problème de connexion réseau</td>
+                                            <td><span class="badge bg-success">Résolu</span></td>
+                                            <td>20/05/2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td>IT-2023-055</td>
+                                            <td>Imprimante hors service</td>
+                                            <td><span class="badge bg-success">Résolu</span></td>
+                                            <td>18/05/2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td>IT-2023-054</td>
+                                            <td>Mise à jour logiciel</td>
+                                            <td><span class="badge bg-info">En cours</span></td>
+                                            <td>17/05/2023</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Upcoming Activities -->
+                <div class="col-lg-5 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Activités planifiées</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="timeline p-4">
+                                <div class="timeline-item">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <h6 class="mb-1">Maintenance serveur</h6>
+                                        <p class="text-muted mb-0">Prévu le 25 mai 2023</p>
+                                        <p class="small mb-0">Mise à jour des systèmes et sauvegardes</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <h6 class="mb-1">Audit sécurité</h6>
+                                        <p class="text-muted mb-0">Prévu le 1er juin 2023</p>
+                                        <p class="small mb-0">Vérification des protocoles de sécurité</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <h6 class="mb-1">Renouvellement de contrat</h6>
+                                        <p class="text-muted mb-0">Prévu le 15 juin 2023</p>
+                                        <p class="small mb-0">Discussion sur les termes du nouveau contrat</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
+
+<!-- Nouveau template dans portals_templates.xml -->
+<template id="portal_my_assignments" name="My Assigned Equipment">
+    <t t-call="portal.portal_layout">
+        <div class="container pt-3">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-0">Mes équipements affectés</h2>
+                    <p class="text-muted">Équipements dont vous êtes responsable</p>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">Équipements actuellement affectés</h4>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Équipement</th>
+                                    <th>Date d'affectation</th>
+                                    <th>Conditions</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="assignments" t-as="assignment">
+                                    <td><t t-esc="assignment.materiel_id.name"/></td>
+                                    <td><t t-esc="assignment.date_debut"/></td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-outline-secondary">
+                                            <i class="fa fa-file-text-o"></i> Voir
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a t-att-href="'/my/assignment/%s' % assignment.id" class="btn btn-sm btn-outline-primary">
+                                            <i class="fa fa-eye"></i> Détails
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
+
+<!-- Ajouter ce template pour injecter le style personnalisé -->
+<template id="portal_custom_styles" name="Custom Portal Styles" inherit_id="portal.frontend_layout">
+    <xpath expr="//head" position="inside">
+        <t t-if="client and client.couleur_primaire">
+            <style>
+                /* Styles personnalisés pour le client */
+                :root {
+                    --client-primary-color: <t t-esc="client.couleur_primaire"/>;
+                    --client-secondary-color: <t t-esc="client.couleur_secondaire or '#28a745'"/>;
+                }
+                
+                /* Appliquer les couleurs personnalisées */
+                .o_portal_wrap .btn-primary {
+                    background: linear-gradient(45deg, var(--client-primary-color), color-mix(in srgb, var(--client-primary_color) 70%, white));
+                    border-color: var(--client-primary-color);
+                }
+                
+                .o_portal_wrap .btn-primary:hover {
+                    background: linear-gradient(45deg, color-mix(in srgb, var(--client-primary-color) 80%, black), var(--client-primary-color));
+                }
+                
+                .o_portal_wrap .text-primary {
+                    color: var(--client-primary-color) !important;
+                }
+                
+                .o_portal_wrap .badge.bg-primary {
+                    background: linear-gradient(45deg, var(--client-primary-color), color-mix(in srgb, var(--client.primary_color) 70%, white)) !important;
+                }
+
+                /* Autres styles personnalisés... */
+            </style>
+        </t>
+    </xpath>
+</template>
+
+<!-- Ajouter à la page d'accueil du portail -->
+<template id="portal_client_banner" name="Client Banner" inherit_id="portal.portal_my_home">
+    <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+        <t t-if="client and (client.logo or client.presentation)">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div t-if="client.logo" class="col-md-3 text-center">
+                            <img t-att-src="'data:image/png;base64,' + client.logo" alt="Logo" class="img-fluid" style="max-height: 120px;"/>
+                        </div>
+                        <div t-att-class="'col-md-9' if client.logo else 'col-md-12'">
+                            <h3 t-if="client.name" class="mb-2" t-esc="client.name"/>
+                            <p t-if="client.slogan" class="text-muted" t-esc="client.slogan"/>
+                            <div t-if="client.presentation" class="mt-3" t-raw="client.presentation"/>
+                            
+                            <div t-if="client.reseaux_sociaux and len(client.reseaux_sociaux) > 0" class="mt-3">
+                                <t t-foreach="client.reseaux_sociaux" t-as="social">
+                                    <a t-att-href="social.url" target="_blank" class="btn btn-sm btn-outline-secondary me-2">
+                                        <i t-attf-class="fa fa-{{social.type}}"></i>
+                                        <t t-esc="social.type.capitalize()"/>
+                                    </a>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </xpath>
+</template>
+
+<template id="portal_user_settings" name="User Settings">
+    <t t-call="portal.portal_layout">
+        <div class="container pt-3">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="mb-0">Paramètres personnalisés</h2>
+                    <p class="text-muted">Personnalisez votre espace client</p>
+                </div>
+            </div>
+            
+            <t t-if="request.params.get('saved')">
+                <div class="alert alert-success alert-dismissible fade show">
+                    <i class="fa fa-check-circle me-2"></i> Vos paramètres ont été enregistrés avec succès.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </t>
+            
+            <form action="/my/settings/save" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                
+                <!-- Thèmes -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Apparence et thème</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <t t-foreach="themes" t-as="theme">
+                                <div class="col-md-4 col-sm-6 mb-3">
+                                    <div t-attf-class="card theme-selector p-2 h-100 #{theme == current_theme and 'border-primary' or ''}">
+                                        <input type="radio" name="theme_id" t-att-value="theme['id']" t-att-checked="theme == current_theme" class="d-none theme-radio"/>
+                                        <div class="card-body text-center">
+                                            <div class="theme-colors d-flex justify-content-center mb-3">
+                                                <div t-attf-style="width: 30px; height: 30px; background-color: #{theme['primary']}; border-radius: 50%; margin-right: 10px;"></div>
+                                                <div t-attf-style="width: 30px; height: 30px; background-color: #{theme['secondary']}; border-radius: 50%;"></div>
+                                            </div>
+                                            <h6 class="mb-0" t-esc="theme['name']"></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                            <div class="col-md-4 col-sm-6 mb-3">
+                                <div t-attf-class="card theme-selector p-2 h-100 #{not current_theme and 'border-primary' or ''}">
+                                    <input type="radio" name="theme_id" value="theme_custom" t-att-checked="not current_theme" class="d-none theme-radio"/>
+                                    <div class="card-body text-center">
+                                        <div class="mb-3">
+                                            <label class="form-label">Couleur primaire</label>
+                                            <input type="color" name="custom_primary_color" t-att-value="client.couleur_primaire" class="form-control form-control-color w-100"/>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">Couleur secondaire</label>
+                                            <input type="color" name="custom_secondary_color" t-att-value="client.couleur_secondaire" class="form-control form-control-color w-100"/>
+                                        </div>
+                                        <h6 class="mt-3 mb-0">Thème personnalisé</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Widgets du tableau de bord -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Tableau de bord personnalisé</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">Sélectionnez les widgets que vous souhaitez afficher sur votre tableau de bord.</p>
+                        <div class="row">
+                            <t t-foreach="dashboard_widgets" t-as="widget">
+                                <div class="col-md-4">
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" class="form-check-input" t-att-id="widget['id']" t-att-name="widget['id']" t-att-checked="widget['enabled']"/>
+                                        <label class="form-check-label" t-att-for="widget['id']" t-esc="widget['name']"></label>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Préférences de notification -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Préférences de notification</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">Choisissez comment vous souhaitez être notifié des événements importants.</p>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Événement</th>
+                                        <th>Email</th>
+                                        <th>SMS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="notification_preferences" t-as="pref">
+                                        <tr>
+                                            <td t-esc="pref['name']"></td>
+                                            <td>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" t-att-id="'notify_' + pref['id'] + '_email'" 
+                                                           t-att-name="'notify_' + pref['id'] + '_email'" t-att-checked="pref['email']"/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" t-att-id="'notify_' + pref['id'] + '_sms'" 
+                                                           t-att-name="'notify_' + pref['id'] + '_sms'" t-att-checked="pref['sms']"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-end mb-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save me-1"></i> Enregistrer les paramètres
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Sélecteur de thème
+                const themeCards = document.querySelectorAll('.theme-selector');
+                themeCards.forEach(card => {
+                    card.addEventListener('click', function() {
+                        // Déselectionner tous les thèmes
+                        themeCards.forEach(c => c.classList.remove('border-primary'));
+                        // Sélectionner le thème cliqué
+                        card.classList.add('border-primary');
+                        // Cocher le radio correspondant
+                        card.querySelector('input[type="radio"]').checked = true;
+                    });
+                });
+            });
+        </script>
+    </t>
+</template>
+
+<!-- Ajouter dans le footer du template portal.portal_layout -->
+<template id="footer_custom" inherit_id="portal.frontend_layout">
+    <xpath expr="//footer" position="inside">
+        <div class="text-center my-3">
+            <a href="/my/settings" class="mx-2"><i class="fa fa-cog"></i> Personnalisation</a>
+        </div>
+    </xpath>
+</template>
 </odoo>
 

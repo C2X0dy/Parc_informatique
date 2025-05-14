@@ -281,5 +281,37 @@
               parent="menu_it_parc_root" 
               action="action_it_parc_dashboard" 
               sequence="1"/>
+
+    <!-- Nouveau template dans views/dashboard_views.xml -->
+    <record id="view_it_parc_affectation_dashboard" model="ir.ui.view">
+        <field name="name">it.parc.affectation.dashboard</field>
+        <field name="model">it.parc.dashboard</field>
+        <field name="arch" type="xml">
+            <kanban class="o_it_parc_dashboard">
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                            <div class="o_kanban_record_top mb-0">
+                                <h3 class="oe_kanban_heading">Affectations</h3>
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-6 py-3 text-center">
+                                        <span class="o_value"><t t-esc="affectations_en_cours"/></span>
+                                        <span class="o_label">En cours</span>
+                                    </div>
+                                    <div class="col-6 py-3 text-center">
+                                        <span class="o_value"><t t-esc="affectations_a_approuver"/></span>
+                                        <span class="o_label">À approuver</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
 </odoo>
 

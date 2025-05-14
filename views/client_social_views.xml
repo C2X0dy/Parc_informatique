@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue formulaire pour les réseaux sociaux -->
+    <record id="view_it_parc_client_social_form" model="ir.ui.view">
+        <field name="name">it.parc.client.social.form</field>
+        <field name="model">it.parc.client.social</field>
+        <field name="arch" type="xml">
+            <form string="Réseau social">
+                <sheet>
+                    <group>
+                        <field name="client_id" invisible="context.get('hide_client_id', False)"/>
+                        <field name="type"/>
+                        <field name="nom"/>
+                        <field name="url" widget="url"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vue liste pour les réseaux sociaux -->
+    <record id="view_it_parc_client_social_list" model="ir.ui.view">
+        <field name="name">it.parc.client.social.list</field>
+        <field name="model">it.parc.client.social</field>
+        <field name="arch" type="xml">
+            <list string="Réseaux sociaux">
+                <field name="client_id" invisible="context.get('hide_client_id', False)"/>
+                <field name="type"/>
+                <field name="nom"/>
+                <field name="url" widget="url"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action pour les réseaux sociaux -->
+    <record id="action_it_parc_client_social" model="ir.actions.act_window">
+        <field name="name">Réseaux sociaux</field>
+        <field name="res_model">it.parc.client.social</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Ajout de l'onglet Réseaux sociaux dans la vue client -->
+    <record id="view_it_parc_client_form_inherit" model="ir.ui.view">
+        <field name="name">it.parc.client.form.inherit</field>
+        <field name="model">it.parc.client</field>
+        <field name="inherit_id" ref="it_parc.view_it_parc_client_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Réseaux sociaux" name="social">
+                    <field name="reseaux_sociaux">
+                        <list editable="bottom">
+                            <field name="type"/>
+                            <field name="nom"/>
+                            <field name="url" widget="url"/>
+                        </list>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>
