@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Commenté temporairement pour éviter les erreurs lors de l'installation
+    <template id="portal_my_home_menu_it_parc" name="Portal Menu IT Parc" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'incident'" class="breadcrumb-item">
+                <a t-if="incident" t-attf-href="/my/incidents?{{ keep_query() }}">Incidents</a>
+                <t t-else="">Incidents</t>
+            </li>
+        </xpath>
+    </template>
+    -->
+    <!-- Add menu items to portal home -->
+    <template id="portal_my_home_it_parc" name="Portal IT Parc" inherit_id="portal.portal_my_home" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">Mon Parc Informatique</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <a href="/my/incidents" class="text-reset text-decoration-none">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body d-flex">
+                                        <div class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1">Mes incidents</h5>
+                                            <p class="text-muted mb-0">Suivi de vos incidents déclarés</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <a href="/my/materials" class="text-reset text-decoration-none">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body d-flex">
+                                        <div class="rounded-circle bg-success text-white me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="fa fa-laptop"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-1">Mes équipements</h5>
+                                            <p class="text-muted mb-0">Liste de vos équipements</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="portal_my_incidents" name="My Incidents">
+        <t t-call="portal.portal_layout">
+            <div class="container pt-3">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="mb-0">Mes incidents</h2>
+                        <p class="text-muted">Suivi des demandes d'assistance</p>
+                    </div>
+                </div>
+                
+                <!-- Stats cards -->
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-info text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-clock fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">En cours</span>
+                                        <h3 class="mb-0"><t t-esc="incidents_en_cours or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-success text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-check fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Résolus</span>
+                                        <h3 class="mb-0"><t t-esc="incidents_resolus or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-warning text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-history fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Total incidents</span>
+                                        <h3 class="mb-0"><t t-esc="incidents_total or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Liste des incidents -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Mes incidents récents</h4>
+                        <a href="/my/create/incident" class="btn btn-primary">Nouveau ticket</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Référence</th>
+                                        <th>Description</th>
+                                        <th>Date</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="incidents or []" t-as="incident">
+                                        <td><t t-esc="incident.reference"/></td>
+                                        <td><t t-esc="incident.description"/></td>
+                                        <td><t t-esc="incident.date_creation"/></td>
+                                        <td>
+                                            <span t-if="incident.state == 'new'" class="badge bg-info">Nouveau</span>
+                                            <span t-elif="incident.state == 'in_progress'" class="badge bg-warning">En cours</span>
+                                            <span t-elif="incident.state == 'done'" class="badge bg-success">Résolu</span>
+                                            <span t-else="" class="badge bg-secondary">Autre</span>
+                                        </td>
+                                        <td>
+                                            <a t-att-href="'/my/incident/%s' % incident.id" class="btn btn-sm btn-outline-primary">Voir détail</a>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="not incidents or len(incidents) == 0">
+                                        <td colspan="5" class="text-center text-muted py-4">
+                                            Aucun incident trouvé
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Add the materials template -->
+    <template id="portal_my_materials" name="My Equipment">
+        <t t-call="portal.portal_layout">
+            <div class="container pt-3">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="mb-0">Mes équipements</h2>
+                        <p class="text-muted">Liste de mon parc informatique</p>
+                    </div>
+                </div>
+                
+                <!-- Stats cards -->
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-success text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-check-circle fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">En service</span>
+                                        <h3 class="mb-0"><t t-esc="materials_actifs or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-warning text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-wrench fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">En maintenance</span>
+                                        <h3 class="mb-0"><t t-esc="materials_maintenance or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                        <i class="fa fa-laptop fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Total équipements</span>
+                                        <h3 class="mb-0"><t t-esc="materials_total or 0"/></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Liste des matériels -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Mes équipements</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Référence</th>
+                                        <th>Nom</th>
+                                        <th>Type</th>
+                                        <th>Garantie</th>
+                                        <th>Statut</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="materials or []" t-as="material">
+                                        <td><t t-esc="material.reference"/></td>
+                                        <td><t t-esc="material.name"/></td>
+                                        <td><t t-esc="material.type"/></td>
+                                        <td>
+                                            <span t-if="material.garantie_valide" class="badge bg-success">Valide</span>
+                                            <span t-else="" class="badge bg-danger">Expirée</span>
+                                        </td>
+                                        <td>
+                                            <span t-if="material.etat == 'stock'" class="badge bg-info">En stock</span>
+                                            <span t-elif="material.etat == 'actif'" class="badge bg-success">En service</span>
+                                            <span t-elif="material.etat == 'maintenance'" class="badge bg-warning">En maintenance</span>
+                                            <span t-elif="material.etat == 'panne'" class="badge bg-danger">En panne</span>
+                                            <span t-elif="material.etat == 'obsolete'" class="badge bg-secondary">Obsolète</span>
+                                            <span t-elif="material.etat == 'rebut'" class="badge bg-dark">Au rebut</span>
+                                            <span t-else="" class="badge bg-secondary">Autre</span>
+                                        </td>
+                                        <td class="text-end">
+                                            <a t-att-href="'/my/material/%s' % material.id" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-eye me-1"></i> Voir détail
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="not materials or len(materials) == 0">
+                                        <td colspan="6" class="text-center text-muted py-4">
+                                            Aucun équipement trouvé
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-center bg-white" t-if="pager">
+                        <t t-call="portal.pager"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Add material detail template -->
+    <template id="portal_material_detail" name="Material Details">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h2 class="mb-0"><t t-esc="materiel.name"/></h2>
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item">
+                                        <a href="/my/home">Accueil</a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="/my/materials">Équipements</a>
+                                    </li>
+                                    <li class="breadcrumb-item active">
+                                        <t t-esc="materiel.name"/>
+                                    </li>
+                                </ol>
+                            </div>
+                            <a href="/my/materials" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left me-1"></i> Retour
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h4 class="mb-0">Détails de l'équipement</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <p><strong>Marque:</strong> <t t-esc="materiel.marque"/></p>
+                                        <p><strong>Modèle:</strong> <t t-esc="materiel.modele"/></p>
+                                        <p><strong>N° de série:</strong> <t t-esc="materiel.serial_number"/></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Type:</strong> <t t-esc="materiel.type"/></p>
+                                        <p><strong>Catégorie:</strong> <t t-esc="materiel.categorie_id.name"/></p>
+                                        <p><strong>Site:</strong> <t t-esc="materiel.site_id.name"/></p>
+                                    </div>
+                                </div>
+                                
+                                <h5>Description</h5>
+                                <div class="mb-4">
+                                    <p t-field="materiel.description" class="text-pre-wrap"/>
+                                </div>
+                                
+                                <div t-if="materiel.specifications">
+                                    <h5>Spécifications techniques</h5>
+                                    <p t-field="materiel.specifications" class="text-pre-wrap"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h4 class="mb-0">Informations</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <strong>Référence:</strong>
+                                    <div><t t-esc="materiel.reference"/></div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>N° d'inventaire:</strong>
+                                    <div><t t-esc="materiel.num_inventaire"/></div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Date d'acquisition:</strong>
+                                    <div><t t-esc="materiel.date_acquisition" t-options="{'widget': 'date'}"/></div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Date de mise en service:</strong>
+                                    <div><t t-esc="materiel.date_mise_service" t-options="{'widget': 'date'}"/></div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Fin de garantie:</strong>
+                                    <div><t t-esc="materiel.date_fin_garantie" t-options="{'widget': 'date'}"/></div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>État:</strong>
+                                    <div class="mt-1">
+                                        <span t-if="materiel.etat == 'stock'" class="badge bg-info">En stock</span>
+                                        <span t-elif="materiel.etat == 'actif'" class="badge bg-success">En service</span>
+                                        <span t-elif="materiel.etat == 'maintenance'" class="badge bg-warning">En maintenance</span>
+                                        <span t-elif="materiel.etat == 'panne'" class="badge bg-danger">En panne</span>
+                                        <span t-elif="materiel.etat == 'obsolete'" class="badge bg-secondary">Obsolète</span>
+                                        <span t-elif="materiel.etat == 'rebut'" class="badge bg-dark">Au rebut</span>
+                                        <span t-else="" class="badge bg-secondary">Autre</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h4 class="mb-0">Actions</h4>
+                            </div>
+                            <div class="card-body">
+                                <a href="/my/create/incident?materiel_id={{materiel.id}}" class="btn btn-primary w-100 mb-2">
+                                    <i class="fa fa-exclamation-triangle me-1"></i> Signaler un incident
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Create incident template -->
+    <template id="portal_create_incident" name="Create Incident">
+        <t t-call="portal.portal_layout">
+            <div class="container pt-3">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2 class="mb-0">Créer un nouveau ticket d'incident</h2>
+                        <p class="text-muted">Signalez un problème ou une demande d'assistance</p>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Formulaire de signalement</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="/my/incident/submit" method="post" class="o_mark_required">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            
+                            <div class="mb-3">
+                                <label for="objet" class="form-label">Objet</label>
+                                <input type="text" class="form-control" name="objet" id="objet" required="required"/>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="type" class="form-label">Type d'incident</label>
+                                <select class="form-select" name="type" id="type" required="required">
+                                    <option value="">Sélectionnez un type...</option>
+                                    <t t-foreach="types" t-as="type">
+                                        <option t-att-value="type[0]"><t t-esc="type[1]"/></option>
+                                    </t>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="materiel_id" class="form-label">Équipement concerné (optionnel)</label>
+                                <select class="form-select" name="materiel_id" id="materiel_id">
+                                    <option value="">Sélectionnez un équipement...</option>
+                                    <t t-foreach="materiels" t-as="mat">
+                                        <option t-att-value="mat.id"><t t-esc="mat.name"/> (<t t-esc="mat.reference"/>)</option>
+                                    </t>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="description" class="form-label">Description détaillée</label>
+                                <textarea class="form-control" name="description" id="description" rows="6" required="required" 
+                                          placeholder="Veuillez décrire le problème rencontré..."></textarea>
+                            </div>
+                            
+                            <div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-check me-1"></i> Soumettre
+                                </button>
+                                <a href="/my/incidents" class="btn btn-secondary ms-2">
+                                    <i class="fa fa-times me-1"></i> Annuler
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Incident detail template -->
+    <template id="portal_incident_detail" name="Incident Details">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h2 class="mb-0"><t t-esc="incident.name"/></h2>
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item">
+                                        <a href="/my/home">Accueil</a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="/my/incidents">Incidents</a>
+                                    </li>
+                                    <li class="breadcrumb-item active">
+                                        <t t-esc="incident.name"/>
+                                    </li>
+                                </ol>
+                            </div>
+                            <a href="/my/incidents" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left me-1"></i> Retour
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h4 class="mb-0">Détails de l'incident</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-4">
+                                    <h5><t t-esc="incident.objet"/></h5>
+                                    <span t-if="incident.etat == 'nouveau'" class="badge bg-info">Nouveau</span>
+                                    <span t-elif="incident.etat == 'en_cours'" class="badge bg-warning">En cours</span>
+                                    <span t-elif="incident.etat == 'en_attente'" class="badge bg-secondary">En attente</span>
+                                    <span t-elif="incident.etat == 'resolu'" class="badge bg-success">Résolu</span>
+                                    <span t-elif="incident.etat == 'annule'" class="badge bg-danger">Annulé</span>
+                                </div>
+                                
+                                <h5>Description</h5>
+                                <div class="mb-4">
+                                    <p t-field="incident.description" class="text-pre-wrap"/>
+                                </div>
+                                
+                                <div t-if="incident.solution and incident.etat == 'resolu'">
+                                    <h5>Solution</h5>
+                                    <p t-field="incident.solution" class="text-pre-wrap"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h4 class="mb-0">Informations</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <strong>Référence:</strong>
+                                    <div><t t-esc="incident.name"/></div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Date de création:</strong>
+                                    <div><t t-esc="incident.date_creation" t-options="{'widget': 'datetime'}"/></div>
+                                </div>
+                                <div t-if="incident.date_cloture" class="mb-3">
+                                    <strong>Date de clôture:</strong>
+                                    <div><t t-esc="incident.date_cloture" t-options="{'widget': 'datetime'}"/></div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Type:</strong>
+                                    <div>
+                                        <t t-if="incident.type == 'panne'">Panne matérielle</t>
+                                        <t t-elif="incident.type == 'bug'">Bug logiciel</t>
+                                        <t t-elif="incident.type == 'reseau'">Problème réseau</t>
+                                        <t t-elif="incident.type == 'securite'">Incident de sécurité</t>
+                                        <t t-elif="incident.type == 'demande'">Demande d'assistance</t>
+                                        <t t-elif="incident.type == 'autre'">Autre</t>
+                                    </div>
+                                </div>
+                                <div t-if="incident.materiel_id" class="mb-3">
+                                    <strong>Équipement concerné:</strong>
+                                    <div><t t-esc="incident.materiel_id.name"/></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Add menus to portal layout -->
+    <template id="portal_layout_it_parc" inherit_id="portal.portal_breadcrumbs" name="Portal Layout IT Parc">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'incidents' or page_name == 'incident'" t-attf-class="breadcrumb-item #{'active ' if page_name == 'incidents' else ''}">
+                <a t-if="page_name != 'incidents'" t-attf-href="/my/incidents">Incidents</a>
+                <span t-if="page_name == 'incidents'">Incidents</span>
+            </li>
+            <li t-if="page_name == 'incident'" class="breadcrumb-item active">
+                <span t-field="incident.name"/>
+            </li>
+            <li t-if="page_name == 'materials' or page_name == 'material'" t-attf-class="breadcrumb-item #{'active ' if page_name == 'materials' else ''}">
+                <a t-if="page_name != 'materials'" t-attf-href="/my/materials">Équipements</a>
+                <span t-if="page_name == 'materials'">Équipements</span>
+            </li>
+            <li t-if="page_name == 'material'" class="breadcrumb-item active">
+                <span t-field="materiel.name"/>
+            </li>
+            <li t-if="page_name == 'create_incident'" class="breadcrumb-item active">
+                Nouveau ticket
+            </li>
+        </xpath>
+    </template>
+</odoo>
+

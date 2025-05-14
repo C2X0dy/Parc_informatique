@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_it_parc_contrat_form" model="ir.ui.view">
+        <field name="name">it.parc.contrat.form</field>
+        <field name="model">it.parc.contrat</field>
+        <field name="arch" type="xml">
+            <form string="Contrat">
+                <header>
+                    <button name="action_generer_facture" string="Générer facture" type="object" class="oe_highlight" 
+                            invisible="etat != 'actif'"/>
+                    <button name="action_renouveler_contrat" string="Renouveler" type="object" 
+                            invisible="etat not in ('actif', 'expire')"/>
+                    <button name="action_creer_abonnement" string="Créer abonnement" type="object"
+                            invisible="etat != 'actif'" class="btn-outline-secondary"/>
+                    <field name="etat" widget="statusbar" statusbar_visible="draft,en_attente,actif,expire"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert" invisible="alerte_renouvellement == False">
+                        <strong>Attention !</strong> Ce contrat arrive à expiration dans <field name="jours_avant_echeance"/> jours.
+                    </div>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_materiels" type="object" class="oe_stat_button" icon="fa-laptop">
+                            <field name="materiel_count" widget="statinfo" string="Matériels"/>
+                        </button>
+                        <button name="action_view_factures" type="object" class="oe_stat_button" icon="fa-money">
+                            <field name="facture_count" widget="statinfo" string="Factures"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Référence du contrat"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="client_id"/>
+                            <field name="reference"/>
+                            <field name="type"/>
+                            <field name="date_debut"/>
+                            <field name="date_fin"/>
+                        </group>
+                        <group>
+                            <field name="montant" widget="monetary"/>
+                            <field name="devise"/>
+                            <field name="montant_total" widget="monetary"/>
+                            <field name="frequence_facturation"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Description du contrat..."/>
+                        </page>
+                        
+                        <page string="Niveaux de service (SLA)" name="sla">
+                            <group>
+                                <group>
+                                    <field name="sla_delai_resolution"/>
+                                    <field name="sla_interventions_inclus"/>
+                                </group>
+                                <group>
+                                    <field name="tarif_horaire_hf"/>
+                                    <field name="tarif_deplacement_hf"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="sla_details" placeholder="Détails des services inclus et conditions..."/>
+                                <field name="tarifs_supplementaires" placeholder="Autres tarifs spécifiques..."/>
+                            </group>
+                        </page>
+                        
+                        <page string="Renouvellement" name="renouvellement">
+                            <group>
+                                <group>
+                                    <field name="renouvellement_auto"/>
+                                    <field name="preavis_renouvellement"/>
+                                    <field name="date_alerte_renouvellement" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="alerte_renouvellement" invisible="1"/>
+                                </group>
+                            </group>
+                            <field name="condition_renouvellement" placeholder="Conditions détaillées de renouvellement..."/>
+                        </page>
+                        
+                        <page string="Matériels couverts" name="materiels">
+                            <field name="materiel_ids" context="{'default_client_id': client_id}">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="reference"/>
+                                    <field name="type"/>
+                                    <field name="etat"/>
+                                </list>
+                            </field>
+                        </page>
+                        
+                        <page string="Factures" name="factures">
+                            <button name="action_view_factures" type="object" string="Voir les factures" class="oe_highlight"/>
+                        </page>
+                        
+                        <page string="Documents" name="documents">
+                            <group>
+                                <field name="contrat_signe_ids" widget="many2many_binary" string="Contrat signé"/>
+                                <field name="documents_annexes_ids" widget="many2many_binary" string="Documents annexes"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_it_parc_contrat_list" model="ir.ui.view">
+        <field name="name">it.parc.contrat.list</field>
+        <field name="model">it.parc.contrat</field>
+        <field name="arch" type="xml">
+            <list string="Contrats">
+                <field name="name"/>
+                <field name="reference"/>
+                <field name="client_id"/>
+                <field name="type"/>
+                <field name="date_debut"/>
+                <field name="date_fin"/>
+                <field name="montant" widget="monetary"/>
+                <field name="devise"/>
+                <field name="jours_avant_echeance" invisible="1"/>
+                <field name="alerte_renouvellement" invisible="1"/>
+                <field name="etat" decoration-success="etat == 'actif'" decoration-danger="etat == 'expire'" decoration-info="etat == 'draft'" decoration-warning="etat == 'resilie'" decoration-primary="etat == 'en_attente'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_it_parc_contrat_search" model="ir.ui.view">
+        <field name="name">it.parc.contrat.search</field>
+        <field name="model">it.parc.contrat</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher un contrat">
+                <field name="name"/>
+                <field name="reference"/>
+                <field name="client_id"/>
+                <separator/>
+                <filter name="draft" string="Brouillon" domain="[('etat', '=', 'draft')]"/>
+                <filter name="en_attente" string="En attente" domain="[('etat', '=', 'en_attente')]"/>
+                <filter name="actif" string="Actif" domain="[('etat', '=', 'actif')]"/>
+                <filter name="expire" string="Expiré" domain="[('etat', '=', 'expire')]"/>
+                <filter name="resilie" string="Résilié" domain="[('etat', '=', 'resilie')]"/>
+                <separator/>
+                <filter name="renouvellement_bientot" string="À renouveler" domain="[('alerte_renouvellement', '=', True)]"/>
+                <separator/>
+                <filter name="type_full_support" string="Full Support" domain="[('type', '=', 'full_support')]"/>
+                <filter name="type_maintenance" string="Maintenance" domain="[('type', '=', 'maintenance')]"/>
+                <filter name="type_materiel" string="Matériel uniquement" domain="[('type', '=', 'materiel')]"/>
+                <filter name="type_licence" string="Licence" domain="[('type', '=', 'licence')]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter name="group_by_client" string="Client" context="{'group_by': 'client_id'}"/>
+                    <filter name="group_by_type" string="Type" context="{'group_by': 'type'}"/>
+                    <filter name="group_by_etat" string="État" context="{'group_by': 'etat'}"/>
+                    <filter name="group_by_mois_debut" string="Mois de début" context="{'group_by': 'date_debut:month'}"/>
+                    <filter name="group_by_mois_fin" string="Mois de fin" context="{'group_by': 'date_fin:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_it_parc_contrat" model="ir.actions.act_window">
+        <field name="name">Contrats</field>
+        <field name="res_model">it.parc.contrat</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_it_parc_contrat_search"/>
+        <field name="context">{'search_default_actif': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre premier contrat
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_it_parc_contrat" name="Contrats" parent="menu_it_parc_root" action="action_it_parc_contrat" sequence="30"/>
+</odoo>
+

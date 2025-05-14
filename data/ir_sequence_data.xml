@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Séquence pour les tickets -->
+        <record id="seq_it_parc_ticket" model="ir.sequence">
+            <field name="name">Ticket Sequence</field>
+            <field name="code">it.parc.ticket</field>
+            <field name="prefix">TIC/%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Séquence pour les abonnements -->
+        <record id="seq_it_parc_abonnement" model="ir.sequence">
+            <field name="name">Abonnement Sequence</field>
+            <field name="code">it.parc.abonnement</field>
+            <field name="prefix">ABO/%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

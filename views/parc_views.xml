@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Catégorie de matériel Views -->
+    <record id="view_it_parc_materiel_categorie_form" model="ir.ui.view">
+        <field name="name">it.parc.materiel.categorie.form</field>
+        <field name="model">it.parc.materiel.categorie</field>
+        <field name="arch" type="xml">
+            <form string="Catégorie de matériel">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="parent_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Sous-catégories" name="subcategories">
+                            <field name="child_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_it_parc_materiel_categorie_list" model="ir.ui.view">
+        <field name="name">it.parc.materiel.categorie.list</field>
+        <field name="model">it.parc.materiel.categorie</field>
+        <field name="arch" type="xml">
+            <list string="Catégories de matériel">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="parent_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Site Views -->
+    <record id="view_it_parc_site_form" model="ir.ui.view">
+        <field name="name">it.parc.site.form</field>
+        <field name="model">it.parc.site</field>
+        <field name="arch" type="xml">
+            <form string="Site">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="client_id"/>
+                        <field name="adresse"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_it_parc_site_list" model="ir.ui.view">
+        <field name="name">it.parc.site.list</field>
+        <field name="model">it.parc.site</field>
+        <field name="arch" type="xml">
+            <list string="Sites">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="client_id"/>
+                <field name="adresse"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Matériel Form View -->
+    <record id="view_it_parc_materiel_form" model="ir.ui.view">
+        <field name="name">it.parc.materiel.form</field>
+        <field name="model">it.parc.materiel</field>
+        <field name="arch" type="xml">
+            <form string="Matériel">
+                <header>
+                    <button name="action_passer_en_maintenance" string="Passer en maintenance" type="object" class="oe_highlight" invisible="etat == 'maintenance'"/>
+                    <button name="action_marquer_obsolete" string="Marquer obsolète" type="object" invisible="etat == 'obsolete'"/>
+                    <button name="action_marquer_rebut" string="Mettre au rebut" type="object" invisible="etat == 'rebut'"/>
+                    <button name="action_remettre_en_service" string="Remettre en service" type="object" invisible="etat == 'actif'"/>
+                    <field name="etat" widget="statusbar" statusbar_visible="stock,actif,maintenance,panne,obsolete,rebut"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_incidents" type="object" class="oe_stat_button" icon="fa-exclamation-triangle">
+                            <field name="incident_count" widget="statinfo" string="Incidents"/>
+                        </button>
+                        <button name="action_view_affectations" type="object" class="oe_stat_button" icon="fa-user">
+                            <span class="o_stat_text">Affectations</span>
+                        </button>
+                        <button name="action_print_qrcode" type="object" class="oe_stat_button" icon="fa-qrcode">
+                            <span class="o_stat_text">QR Code</span>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nom du matériel"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Identification">
+                            <field name="num_inventaire"/>
+                            <field name="reference"/>
+                            <field name="marque"/>
+                            <field name="modele"/>
+                            <field name="serial_number"/>
+                            <field name="categorie_id"/>
+                            <field name="type"/>
+                            <field name="type_utilisation"/>
+                        </group>
+                        <group string="Informations générales">
+                            <field name="client_id"/>
+                            <field name="site_id" domain="[('client_id', '=', client_id)]"/>
+                            <field name="emplacement"/>
+                            <field name="service_affectation"/>
+                            <field name="utilisateur_affectation"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Dates et garantie" name="dates">
+                            <group>
+                                <group>
+                                    <field name="date_acquisition"/>
+                                    <field name="date_mise_service"/>
+                                    <field name="date_fin_garantie"/>
+                                </group>
+                                <group>
+                                    <field name="garantie_valide" invisible="1"/>
+                                    <label for="garantie_valide" string="État garantie"/>
+                                    <div>
+                                        <div class="badge badge-success" invisible="garantie_valide != True">Valide (<field name="jours_restant_garantie"/> jours restants)</div>
+                                        <div class="badge badge-danger" invisible="garantie_valide != False">Expirée</div>
+                                    </div>
+                                    <field name="duree_utilisation" widget="integer"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Informations financières" name="financier">
+                            <group>
+                                <group>
+                                    <field name="prix_achat_ht"/>
+                                    <field name="valeur_residuelle"/>
+                                    <field name="devise"/>
+                                </group>
+                                <group>
+                                    <field name="fournisseur_id"/>
+                                    <field name="contrat_id" domain="[('client_id', '=', client_id)]"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Configuration réseau" name="reseau">
+                            <group>
+                                <field name="ip_address"/>
+                                <field name="mac_address"/>
+                                <field name="hostname"/>
+                            </group>
+                        </page>
+                        <page string="Description et spécifications" name="specifications">
+                            <group>
+                                <field name="description" placeholder="Description du matériel..."/>
+                                <field name="specifications" placeholder="Spécifications techniques..."/>
+                                <field name="remarques" placeholder="Remarques internes..."/>
+                            </group>
+                        </page>
+                        <page string="Documents" name="documents">
+                            <group>
+                                <field name="facture_attachment_ids" widget="many2many_binary" string="Factures d'achat"/>
+                                <field name="garantie_attachment_ids" widget="many2many_binary" string="Documents de garantie"/>
+                                <field name="fiche_technique_attachment_ids" widget="many2many_binary" string="Fiches techniques"/>
+                            </group>
+                        </page>
+                        <page string="Historique des affectations" name="affectations">
+                            <!-- Utiliser un bouton pour afficher les affectations au lieu de les afficher directement -->
+                            <button name="action_view_affectations" string="Voir les affectations" type="object" class="oe_highlight"/>
+                        </page>
+                        <page string="Incidents" name="incidents">
+                            <!-- Utiliser un bouton pour afficher les incidents au lieu de les afficher directement -->
+                            <button name="action_view_incidents" string="Voir les incidents" type="object" class="oe_highlight"/>
+                        </page>
+                        <!-- Nouvelle page pour l'amortissement -->
+                        <page string="Amortissement" name="amortissement">
+                            <group>
+                                <group name="amortissement_config">
+                                    <field name="amortissement_active"/>
+                                    <field name="prix_achat_ht" required="amortissement_active == True"/>
+                                    <field name="valeur_residuelle"/>
+                                    <field name="duree_amortissement" required="amortissement_active == True"/>
+                                    <field name="methode_amortissement" required="amortissement_active == True"/>
+                                    <field name="taux_degressif" invisible="methode_amortissement != 'degressif'"/>
+                                    <field name="date_debut_amortissement" required="amortissement_active == True"/>
+                                </group>
+                                <group name="amortissement_info">
+                                    <field name="valeur_comptable" readonly="1"/>
+                                    <button name="action_calculer_amortissement" 
+                                            string="Calculer l'amortissement" 
+                                            type="object" 
+                                            class="btn-primary"
+                                            invisible="amortissement_active == False"/>
+                                </group>
+                            </group>
+                            <field name="amortissement_ids" invisible="amortissement_active == False" context="{'default_materiel_id': id}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Matériel List View -->
+    <record id="view_it_parc_materiel_list" model="ir.ui.view">
+        <field name="name">it.parc.materiel.list</field>
+        <field name="model">it.parc.materiel</field>
+        <field name="arch" type="xml">
+            <list string="Matériels">
+                <field name="num_inventaire"/>
+                <field name="name"/>
+                <field name="marque"/>
+                <field name="modele"/>
+                <field name="serial_number"/>
+                <field name="categorie_id"/>
+                <field name="type"/>
+                <field name="client_id"/>
+                <field name="site_id"/>
+                <field name="etat" decoration-success="etat == 'actif'" decoration-warning="etat == 'maintenance'" decoration-danger="etat in ('panne', 'rebut')" decoration-info="etat == 'stock'" decoration-muted="etat == 'obsolete'"/>
+                <field name="garantie_valide" widget="boolean_toggle"/>
+                <field name="date_acquisition"/>
+                <field name="date_fin_garantie"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Matériel Search View -->
+    <record id="view_it_parc_materiel_search" model="ir.ui.view">
+        <field name="name">it.parc.materiel.search</field>
+        <field name="model">it.parc.materiel</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher un matériel">
+                <field name="name"/>
+                <field name="num_inventaire"/>
+                <field name="reference"/>
+                <field name="serial_number"/>
+                <field name="marque"/>
+                <field name="modele"/>
+                <field name="client_id"/>
+                <field name="site_id"/>
+                <separator/>
+                <filter name="stock" string="En stock" domain="[('etat', '=', 'stock')]"/>
+                <filter name="actif" string="En service" domain="[('etat', '=', 'actif')]"/>
+                <filter name="maintenance" string="En maintenance" domain="[('etat', '=', 'maintenance')]"/>
+                <filter name="panne" string="En panne" domain="[('etat', '=', 'panne')]"/>
+                <filter name="obsolete" string="Obsolète" domain="[('etat', '=', 'obsolete')]"/>
+                <filter name="rebut" string="Mis au rebut" domain="[('etat', '=', 'rebut')]"/>
+                <separator/>
+                <filter name="garantie_valide" string="Sous garantie" domain="[('garantie_valide', '=', True)]"/>
+                <filter name="garantie_expiree" string="Garantie expirée" domain="[('garantie_valide', '=', False), ('date_fin_garantie', '!=', False)]"/>
+                <filter name="sans_garantie" string="Sans garantie" domain="[('date_fin_garantie', '=', False)]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter name="group_by_client" string="Client" context="{'group_by': 'client_id'}"/>
+                    <filter name="group_by_site" string="Site" context="{'group_by': 'site_id'}"/>
+                    <filter name="group_by_categorie" string="Catégorie" context="{'group_by': 'categorie_id'}"/>
+                    <filter name="group_by_type" string="Type" context="{'group_by': 'type'}"/>
+                    <filter name="group_by_marque" string="Marque" context="{'group_by': 'marque'}"/>
+                    <filter name="group_by_etat" string="État" context="{'group_by': 'etat'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Matériel Action -->
+    <record id="action_it_parc_materiel" model="ir.actions.act_window">
+        <field name="name">Matériels</field>
+        <field name="res_model">it.parc.materiel</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_it_parc_materiel_search"/>
+        <field name="context">{'search_default_actif': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre premier matériel
+            </p>
+            <p>
+                Ajoutez des matériels informatiques à votre parc pour en assurer le suivi.
+            </p>
+        </field>
+    </record>
+
+    <!-- Catégorie Action -->
+    <record id="action_it_parc_materiel_categorie" model="ir.actions.act_window">
+        <field name="name">Catégories de matériel</field>
+        <field name="res_model">it.parc.materiel.categorie</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre première catégorie de matériel
+            </p>
+        </field>
+    </record>
+
+    <!-- Site Action -->
+    <record id="action_it_parc_site" model="ir.actions.act_window">
+        <field name="name">Sites</field>
+        <field name="res_model">it.parc.site</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre premier site
+            </p>
+        </field>
+    </record>
+
+    <!-- Amortissement Form View -->
+    <record id="view_it_parc_materiel_amortissement_form" model="ir.ui.view">
+        <field name="name">it.parc.materiel.amortissement.form</field>
+        <field name="model">it.parc.materiel.amortissement</field>
+        <field name="arch" type="xml">
+            <form string="Ligne d'amortissement">
+                <header>
+                    <button name="action_comptabiliser" string="Comptabiliser" type="object" 
+                            class="btn-primary" invisible="state == 'comptabilise'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="brouillon,comptabilise"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="materiel_id" readonly="1"/>
+                            <field name="sequence" readonly="1"/>
+                            <field name="date_debut"/>
+                            <field name="date_fin"/>
+                        </group>
+                        <group>
+                            <field name="montant"/>
+                            <field name="cumul" readonly="1"/>
+                            <field name="valeur_residuelle" readonly="1"/>
+                            <field name="ecriture_comptable_ref" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Amortissement List View -->
+    <record id="view_it_parc_materiel_amortissement_tree" model="ir.ui.view">
+        <field name="name">it.parc.materiel.amortissement.list</field>
+        <field name="model">it.parc.materiel.amortissement</field>
+        <field name="arch" type="xml">
+            <list string="Lignes d'amortissement">
+                <field name="materiel_id"/>
+                <field name="sequence"/>
+                <field name="date_debut"/>
+                <field name="date_fin"/>
+                <field name="montant" sum="Total"/>
+                <field name="cumul"/>
+                <field name="valeur_residuelle"/>
+                <field name="state"/>
+                <button name="action_comptabiliser" string="Comptabiliser" type="object" 
+                        icon="fa-check" invisible="state == 'comptabilise'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Amortissement Search View -->
+    <record id="view_it_parc_materiel_amortissement_search" model="ir.ui.view">
+        <field name="name">it.parc.materiel.amortissement.search</field>
+        <field name="model">it.parc.materiel.amortissement</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher amortissement">
+                <field name="materiel_id"/>
+                <filter name="brouillon" string="Brouillon" domain="[('state', '=', 'brouillon')]"/>
+                <filter name="comptabilise" string="Comptabilisé" domain="[('state', '=', 'comptabilise')]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter name="group_by_materiel" string="Matériel" domain="[]" context="{'group_by': 'materiel_id'}"/>
+                    <filter name="group_by_state" string="État" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Amortissement Action -->
+    <record id="action_it_parc_materiel_amortissement" model="ir.actions.act_window">
+        <field name="name">Amortissements</field>
+        <field name="res_model">it.parc.materiel.amortissement</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_it_parc_materiel_amortissement_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucun amortissement trouvé
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_it_parc_materiel" name="Matériels" parent="menu_it_parc_root" action="action_it_parc_materiel" sequence="20"/>
+    <menuitem id="menu_it_parc_materiel_configuration" name="Configuration Matériels" parent="menu_it_parc_root" sequence="90"/>
+    <menuitem id="menu_it_parc_materiel_categorie" name="Catégories" parent="menu_it_parc_materiel_configuration" action="action_it_parc_materiel_categorie" sequence="10"/>
+    <menuitem id="menu_it_parc_site" name="Sites" parent="menu_it_parc_materiel_configuration" action="action_it_parc_site" sequence="20"/>
+    <menuitem id="menu_it_parc_amortissement" name="Amortissements" 
+          parent="menu_it_parc_materiel_configuration" action="action_it_parc_materiel_amortissement" sequence="30"/>
+</odoo>
+

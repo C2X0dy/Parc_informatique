@@ -1,0 +1,59 @@
+/* Portal specific styling */
+.o_portal_wrap .table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.o_portal_wrap .card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.o_portal_wrap .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.o_portal_wrap .badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+}
+
+.o_portal_wrap .table thead th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.o_portal_wrap .table-hover tbody tr:hover {
+    background-color: #f5f7fa;
+}
+
+/* Custom rounded corners for table */
+.o_portal_wrap .table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Custom button styling */
+.o_portal_wrap .btn-primary {
+    background-color: #3c4ea0;
+    border-color: #3c4ea0;
+}
+
+.o_portal_wrap .btn-primary:hover {
+    background-color: #344089;
+    border-color: #344089;
+}
+
+/* Shadow for floating effect */
+.o_portal_wrap .shadow-sm {
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
+}
+
+/* Text formatting */
+.text-pre-wrap {
+    white-space: pre-wrap;
+}

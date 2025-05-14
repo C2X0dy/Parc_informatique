@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_contrat" model="ir.actions.report">
+        <field name="name">Contrat</field>
+        <field name="model">it.parc.contrat</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">it_parc.report_contrat_document</field>
+        <field name="report_file">it_parc.report_contrat_document</field>
+        <field name="binding_model_id" ref="model_it_parc_contrat"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_contrat_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Contrat <span t-field="doc.name"/></h2>
+                        <div class="row mt32 mb32">
+                            <div class="col-6">
+                                <strong>Client:</strong> <span t-field="doc.client_id.name"/><br/>
+                                <strong>Type de contrat:</strong> <span t-field="doc.type"/><br/>
+                                <strong>Date de début:</strong> <span t-field="doc.date_debut"/><br/>
+                                <strong>Date de fin:</strong> <span t-field="doc.date_fin"/><br/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Montant:</strong> <span t-field="doc.montant"/> <span t-field="doc.devise"/><br/>
+                                <strong>État:</strong> <span t-field="doc.etat"/><br/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Description</h4>
+                                <p t-field="doc.description"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Matériels couverts</h4>
+                                <table class="table table-sm o_main_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nom</th>
+                                            <th>Référence</th>
+                                            <th>Type</th>
+                                            <th>État</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="doc.materiel_ids" t-as="materiel">
+                                            <td><span t-field="materiel.name"/></td>
+                                            <td><span t-field="materiel.reference"/></td>
+                                            <td><span t-field="materiel.type"/></td>
+                                            <td><span t-field="materiel.etat"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+
