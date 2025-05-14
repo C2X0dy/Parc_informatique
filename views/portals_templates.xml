@@ -10,6 +10,7 @@
         </xpath>
     </template>
     -->
+<<<<<<< HEAD
     <!-- Add menu items to portal home -->
     <template id="portal_my_home_it_parc" name="Portal IT Parc" inherit_id="portal.portal_my_home" priority="30">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
@@ -581,5 +582,7 @@
             </li>
         </xpath>
     </template>
+=======
+>>>>>>> 0187f55f20550ada9abbc6603375c8bb8e8e18dc
 </odoo>
 

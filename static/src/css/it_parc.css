@@ -101,6 +101,7 @@
     .o_dashboard_view h3 {
         font-size: 1.2rem;
     }
+<<<<<<< HEAD
 }
 
 /* Portal specific styling */
@@ -156,4 +157,6 @@
 /* Shadow for floating effect */
 .o_portal_wrap .shadow-sm {
     box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
+=======
+>>>>>>> 0187f55f20550ada9abbc6603375c8bb8e8e18dc
 }

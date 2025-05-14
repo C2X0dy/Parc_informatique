@@ -42,9 +42,12 @@ class Client(models.Model):
     incident_count = fields.Integer(compute='_compute_incident_count', string='Nombre d\'incidents')
     site_count = fields.Integer(compute='_compute_site_count', string='Nombre de sites')
     
+<<<<<<< HEAD
     # Add this field to link clients to portal users
     partner_id = fields.Many2one('res.partner', string='Contact associé', help="Lien vers le partenaire Odoo pour l'accès au portail")
     
+=======
+>>>>>>> 0187f55f20550ada9abbc6603375c8bb8e8e18dc
     @api.depends('materiel_ids')
     def _compute_total_postes(self):
         for client in self:

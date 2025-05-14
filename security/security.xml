@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<<<<<<< HEAD
     <data noupdate="0">
         <!-- Groups -->
         <record id="group_it_parc_admin" model="res.groups">
@@ -41,5 +42,8 @@
             <field name="perm_unlink" eval="False"/>
         </record>
     </data>
+=======
+    <!-- Contenu à ajouter plus tard -->
+>>>>>>> 0187f55f20550ada9abbc6603375c8bb8e8e18dc
 </odoo>
 
